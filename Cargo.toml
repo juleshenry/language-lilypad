@@ -1,0 +1,9 @@
+[package]
+name = "language-lilypad"
+version = "0.1.0"
+authors = ["juleshenry"]
+edition = "2021"
+path = "src/main.rs"
+
+[dependencies]
+sycamore = "0.8"
