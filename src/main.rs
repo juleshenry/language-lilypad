@@ -16,7 +16,9 @@ fn App<G: Html>(cx: Scope) -> View<G> {
     let product = create_signal(cx, String::new());
 
     create_effect(cx, || {
-        product.set(multiply(a.get().to_string()));
+        let mut b = a.get().to_string();
+        b.push_str(String::from("!").as_str());
+        product.set(b);
     });
 
     view! { cx,
