@@ -9,6 +9,11 @@ extern "C" {
     fn multiply(a: String) -> String;
 }
 
+fn add_exclamation(mut blah: String) -> String {
+    blah.push_str(String::from("!").as_str());
+    return blah
+}
+
 #[component]
 fn App<G: Html>(cx: Scope) -> View<G> {
     let a = create_signal(cx, String::new());
@@ -16,8 +21,9 @@ fn App<G: Html>(cx: Scope) -> View<G> {
     let product = create_signal(cx, String::new());
 
     create_effect(cx, || {
-        let mut b = a.get().to_string();
-        b.push_str(String::from("!").as_str());
+        let mut user_input = a.get().to_string();
+        user_input = multiply(user_input);
+        let b = add_exclamation(user_input);
         product.set(b);
     });
 

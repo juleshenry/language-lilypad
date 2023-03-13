@@ -1,3 +1,3 @@
 export function multiply(a) {
-  return a;
+  return a + '?';
 }
