@@ -8,3 +8,4 @@ path = "src/main.rs"
 [dependencies]
 sycamore = "0.8"
 wasm-bindgen = "0.2.83"
+tikv-client-ffi = { git = "https://github.com/tikv/tikv.git", branch = "master" }
