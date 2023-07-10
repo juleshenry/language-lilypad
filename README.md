@@ -5,3 +5,22 @@ In this project, we leverage Rust to make a dictionary via async API calls to a 
 Furthermore, for every word in the definition, a definition is provided via hyperlink.
 
 Hence, when using this dictionary, one may leap-frog from word to word, as if they were lilypads.
+
+
+Example : 
+
+Rojo : color de manzanas, chiles, fresas, y más.
+
+Color : 
+
+De :
+
+Manzanas
+
+Chiles : 
+
+Fresas : 
+
+Y : 
+
+Más :
