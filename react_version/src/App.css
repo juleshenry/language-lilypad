@@ -39,3 +39,12 @@
     transform: rotate(360deg);
   }
 }
+
+.form-control {
+  font-size: 5.5rem; /* Adjust the value as needed */
+}
+
+/* Increase font size for the text below */
+.mt-3 p {
+  font-size: 5.5rem; /* Adjust the value as needed */
+}
