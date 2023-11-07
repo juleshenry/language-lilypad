@@ -19,16 +19,25 @@ def extract_text_from_range(pdf_path, start_page, end_page):
     for o in text.split('->')[1:]: 
         matches = re.split(r'\(\d+\)',o)
         for k,kk in enumerate(matches):
-            print('('*5,k+1,')'*5)
+            if not k:
+                print('definición: ',end='')
+            else:
+                print('('*5,k+1,')'*5)
             _matches = re.split(r'\d+\.', kk)
             for i, j in enumerate(_matches):
-                print(i,'~'*(i+3),j)
+                if not i:
+                    if not k:
+                        print(j)
+                    else:
+                        print('\torigen:',kk)
+                else:
+                    print(i,'~'*(i+3),j)
     return text
 
 # Usage example
 pdf_path ="src_langz/RAE_español.pdf"
 start_page = 3
-end_page = 5
+end_page = 5 or 6348 # end of book
 
 extracted_text = extract_text_from_range(pdf_path, start_page, end_page)
 s= Defi('aba')
