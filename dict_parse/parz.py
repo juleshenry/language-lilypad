@@ -1,5 +1,8 @@
 import pdfplumber
 import re, sqlite3
+import time
+
+conn = sqlite3.connect("palabras.db")
 
 
 class Pala:
@@ -10,10 +13,10 @@ class Pala:
 
 class Dixionario:
     def __init__(_S):
-        _S.palabras = list()
+        _S.palabras = dict()
 
-    def add(_S, x):
-        _S.palabras.append(x)
+    def add(_S, pala):
+        _S.palabras[pala.bra] = pala.defis
 
 
 def extract_text_from_range(pdf_path, start_page, end_page):
@@ -24,125 +27,59 @@ def extract_text_from_range(pdf_path, start_page, end_page):
             text += page.extract_text()
     Dix = Dixionario()
     palabras = list(re.split(r"->(.*?)(?=\.)", text))[1:]
-    for x, y in zip(palabras, palabras[1:]):  # skip intro trash
+    for x, y in zip(palabras[::2], palabras[1::2]):  # skip intro trash
         bra, defis = x, y
         Dix.add(Pala(bra, defis))
-        ########## Deeper, later, catch all cases well ####################
-        # parens_ = re.split(r"\(\d+\)", palabra)
-        # if len(parens_) > 1: # Weird case for the entry for 'a'
-        #     p = Pala(parens_[0])
-        #     for k, paren in enumerate(parens_[1:]):
-        #         periodos_ = re.split(r"\d+\.", paren)
-        #         origen = periodos_[0].replace('.','').strip()
-        #         if not origen:
-        #             origen = por_defecto
-        #         p.defis[origen] = periodos_[1:]
-        # else: # Typical case
-        #     periodos_ = list(map(lambda x:x.strip(),re.split(r"\.", palabra)))
-        #     p = Pala(periodos_[0])
-        #     print(periodos_[0])
-        #     print(periodos_[1:])
-        #     p.defis[por_defecto] = periodos_[1:]
-        ############################################################
     return Dix
 
 
 # Usage example
-pdf_path = "src_langz/RAE_español.pdf"
-start_page = 3
-end_page = 6348  # end of book
-dix = extract_text_from_range(pdf_path, start_page, end_page)
-
-conn = sqlite3.connect("palabras.db")
-conn.execute(
-    f"""
-    CREATE TABLE IF NOT EXISTS palabras (
-        palabra TEXT PRIMARY KEY,
-        definicion TEXT
-    )
-"""
-)
-
-for pala in dix.palabras:
-    try:
-        conn.execute(
-            f"""
-            INSERT INTO palabras (palabra, definicion)
-            VALUES (?, ?)
-        """,
-            (pala.bra, pala.defis),
+def popula():
+    pdf_path = "src_langz/RAE_español.pdf"
+    start_page = 3
+    end_page = 6 or 6348  # end of book
+    # Create table, access
+    conn.execute(
+        f"""
+        CREATE TABLE IF NOT EXISTS palabras (
+            palabra TEXT PRIMARY KEY,
+            definicion TEXT
         )
-    except sqlite3.IntegrityError:  # word has two definitions
-        print(pala.bra, "has two definitions")
-        # todo: append definicions
-
-
-def query_palabra(palabra: str):
     """
-    USED TO QUERY FOR THE WORD DEF
-    
-    Example usage
-    ```
-    definition = query_palabra("ababa")
-    if definition:
-        print(f"The definition for 'ababa' is: {definition}")
-    else:
-        print("No definition found for 'ababa'")
-    ```
-    """
-    cursor = conn.cursor()
-    cursor.execute(
-        f"""
-        SELECT definicion
-        FROM palabras
-        WHERE palabra = ?
-    """,
-        (palabra,),
     )
+    dix = extract_text_from_range(pdf_path, start_page, end_page)
 
-    result = cursor.fetchone()
+    # LOAD dictionary into SQL
+    for lv in dix.palabras.items():
+        try:
+            palabra, defis = lv
+            conn.execute(
+                f"""
+                INSERT INTO palabras (palabra, definicion)
+                VALUES (?, ?)
+            """,
+                (palabra, defis),
+            )
+        except sqlite3.IntegrityError:  # word has two definitions
+            pass
+            # print(palabra, "has two definitions")
+            # todo: append definicions
 
-    conn.close()
-
-    if result:
-        return result[0]
-    else:
-        return None
-
-
-def get_100(palabra: str):
-    """
-    USED TO QUERY FOR THE WORD DEF
-    
-    Example usage
-    ```
-    definition = query_palabra("ababa")
-    if definition:
-        print(f"The definition for 'ababa' is: {definition}")
-    else:
-        print("No definition found for 'ababa'")
-    ```
-    """
+    # FETCH ALL SQLITE
     cursor = conn.cursor()
-    cursor.execute(
-        f"""
-        SELECT definicion
-        FROM palabras
-        LIMIT 1000
-    """,
-        (palabra,),
-    )
-
-    result = cursor.fetchone()
-
-    conn.close()
-
-    if result:
-        return result
-    else:
-        return None
+    cursor.execute("SELECT * FROM palabras")
+    rows = cursor.fetchall()
+    for a in rows:
+        print(a[0], "\n", a[1], f'\n{"#"*100}')
+    # print(*, sep =)
+    cursor.close()
 
 
-x = get_100()
-for xx in x:
-    print(xx)
+s = time.time()
+popula()
+t = time.time()
+print("total:", t - s)
+
+#close commit
+conn.commit()
+conn.close()

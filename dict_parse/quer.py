@@ -1,5 +1,7 @@
 import sqlite3
 
+conn = sqlite3.connect("palabras.db")
+
 
 def query_palabra(palabra: str):
     """
@@ -35,13 +37,12 @@ def query_palabra(palabra: str):
 
 
 def get_100():
-
-    conn = sqlite3.connect("palabras.db")
     cursor = conn.cursor()
     cursor.execute(
         f"""
         SELECT *
         FROM palabras
+        LIMIT 100
     """
     )
     result = cursor.fetchone()
@@ -51,10 +52,14 @@ def get_100():
         return None
 
 
-x = get_100()
-if x:
-    for xx in x:
-        print(xx)
+def loadall():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM palabras")
+    rows = cursor.fetchall()
+    for a in rows:
+        print(a[0], "\n", a[1], f'\n{"#"*100}')
+
+loadall()
 
 # print(query_palabra('a'))
 # with open('pax.txt') as p:
