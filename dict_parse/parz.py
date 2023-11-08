@@ -50,7 +50,7 @@ def extract_text_from_range(pdf_path, start_page, end_page):
 # Usage example
 pdf_path = "src_langz/RAE_español.pdf"
 start_page = 3
-end_page = 5 or 6348  # end of book
+end_page = 6348  # end of book
 dix = extract_text_from_range(pdf_path, start_page, end_page)
 
 conn = sqlite3.connect("palabras.db")
@@ -64,13 +64,17 @@ conn.execute(
 )
 
 for pala in dix.palabras:
-    conn.execute(
-        f"""
-        INSERT INTO palabras (palabra, definicion)
-        VALUES (?, ?)
-    """,
-        (pala.bra, pala.defis),
-    )
+    try:
+        conn.execute(
+            f"""
+            INSERT INTO palabras (palabra, definicion)
+            VALUES (?, ?)
+        """,
+            (pala.bra, pala.defis),
+        )
+    except sqlite3.IntegrityError:  # word has two definitions
+        print(pala.bra, "has two definitions")
+        # todo: append definicions
 
 
 def query_palabra(palabra: str):
@@ -104,3 +108,41 @@ def query_palabra(palabra: str):
         return result[0]
     else:
         return None
+
+
+def get_100(palabra: str):
+    """
+    USED TO QUERY FOR THE WORD DEF
+    
+    Example usage
+    ```
+    definition = query_palabra("ababa")
+    if definition:
+        print(f"The definition for 'ababa' is: {definition}")
+    else:
+        print("No definition found for 'ababa'")
+    ```
+    """
+    cursor = conn.cursor()
+    cursor.execute(
+        f"""
+        SELECT definicion
+        FROM palabras
+        LIMIT 1000
+    """,
+        (palabra,),
+    )
+
+    result = cursor.fetchone()
+
+    conn.close()
+
+    if result:
+        return result
+    else:
+        return None
+
+
+x = get_100()
+for xx in x:
+    print(xx)
