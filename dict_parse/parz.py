@@ -1,5 +1,5 @@
 import pdfplumber
-import re
+import re, sqlite3
 
 
 class Pala:
@@ -7,11 +7,14 @@ class Pala:
         setattr(_S, "bra", bra)
         setattr(_S, "defis", defis)
 
+
 class Dixionario:
     def __init__(_S):
         _S.palabras = list()
 
-    def add(_S,x):_S.palabras.append(x)
+    def add(_S, x):
+        _S.palabras.append(x)
+
 
 def extract_text_from_range(pdf_path, start_page, end_page):
     text = ""
@@ -20,10 +23,10 @@ def extract_text_from_range(pdf_path, start_page, end_page):
             page = pdf.pages[page_num]
             text += page.extract_text()
     Dix = Dixionario()
-    palabras = list(re.split(r'->(.*?)(?=\.)', text))[1:]
-    for x,y in zip(palabras, palabras[1:]): # skip intro trash
-        bra,defis = x,y
-        Dix.add(Pala(bra,defis))
+    palabras = list(re.split(r"->(.*?)(?=\.)", text))[1:]
+    for x, y in zip(palabras, palabras[1:]):  # skip intro trash
+        bra, defis = x, y
+        Dix.add(Pala(bra, defis))
         ########## Deeper, later, catch all cases well ####################
         # parens_ = re.split(r"\(\d+\)", palabra)
         # if len(parens_) > 1: # Weird case for the entry for 'a'
@@ -50,7 +53,54 @@ start_page = 3
 end_page = 5 or 6348  # end of book
 dix = extract_text_from_range(pdf_path, start_page, end_page)
 
-for a in (dix.palabras):
-    print('PALABRA',a.bra)
-    print('DEFIS',a.defis)
-    print('*'*88)
+conn = sqlite3.connect("palabras.db")
+conn.execute(
+    f"""
+    CREATE TABLE IF NOT EXISTS palabras (
+        palabra TEXT PRIMARY KEY,
+        definicion TEXT
+    )
+"""
+)
+
+for pala in dix.palabras:
+    conn.execute(
+        f"""
+        INSERT INTO palabras (palabra, definicion)
+        VALUES (?, ?)
+    """,
+        (pala.bra, pala.defis),
+    )
+
+
+def query_palabra(palabra: str):
+    """
+    USED TO QUERY FOR THE WORD DEF
+    
+    Example usage
+    ```
+    definition = query_palabra("ababa")
+    if definition:
+        print(f"The definition for 'ababa' is: {definition}")
+    else:
+        print("No definition found for 'ababa'")
+    ```
+    """
+    cursor = conn.cursor()
+    cursor.execute(
+        f"""
+        SELECT definicion
+        FROM palabras
+        WHERE palabra = ?
+    """,
+        (palabra,),
+    )
+
+    result = cursor.fetchone()
+
+    conn.close()
+
+    if result:
+        return result[0]
+    else:
+        return None
