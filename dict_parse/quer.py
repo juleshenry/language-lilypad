@@ -39,12 +39,12 @@ def query_palabra(palabra: str):
 
 def loadall():
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM palabras ")
+    cursor.execute("SELECT * FROM palabras LIMIT 10")
     rows = cursor.fetchall()
     for a in rows:
         print(a[0], "\n", a[1], f'\n{"#"*100}')
 
-# loadall()
+
 
 def tokenize(defi:str):
     
@@ -52,9 +52,11 @@ def tokenize(defi:str):
     limp = lambda x:x.replace('.','').replace(',','').replace('(','').replace(')','').replace('-','')
     return map(limp, defi.split(' '))
 
-defi = query_palabra('obispo')
-for o in tokenize(defi):
-    print('PALABRA',o)
-    print('DEFIIII',query_palabra(o))
+defi = query_palabra('monear')
+print(defi)
+# for o in tokenize(defi):
+#     print('PALABRA',o)
+#     print('DEFIIII',query_palabra(o))
+
 # print(query_palabra('a'))
 # with open('pax.txt') as p:

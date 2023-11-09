@@ -6,33 +6,46 @@ const sequelize = new Sequelize({
   storage: path.join(__dirname, 'palabras.db')
 });
 
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+// Define a model for your entries
+const Entry = sequelize.define('palabras', {
+  palabra: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
+  definicion: Sequelize.TEXT,
+},{
+  timestamps: false,
+}
+);
 
-    // Your database operations go here
 
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  } finally {
-    await sequelize.close(); // Close the connection when done
+sequelize.sync();
+
+// Query all entries
+Entry.findAll({
+  where : {
+    palabra: "lobo"
   }
-})();
+}).then(entries => {
+  console.log(entries);
+}).catch(err => {
+  console.error('Error fetching entries:', err);
+});
 
-// const Palabra = sequelize.define('Palabra', {
-//   palabra: {
-//     type: DataTypes.STRING,
-//     allowNull: false
-//   },
-//   word: {
-//     type: DataTypes.STRING,
-//     allowNull: false
+// (async () => {
+//   try {
+//     await sequelize.authenticate();
+//     console.log('Connection has been established successfully.');
+
+//     // Your database operations go here
+
+//   } catch (error) {
+//     console.error('Unable to connect to the database:', error);
+//   } finally {
+//     await sequelize.close(); // Close the connection when done
 //   }
-// }, {
-//   tableName: 'palabras',
-//   timestamps: false
-// });
+// })();
+
 
 // (async () => {
 //   try {
