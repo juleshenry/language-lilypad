@@ -37,7 +37,7 @@ def extract_text_from_range(pdf_path, start_page, end_page):
 def popula():
     pdf_path = "src_langz/RAE_español.pdf"
     start_page = 3
-    end_page = 6 or 6348  # end of book
+    end_page = 6348  # end of book
     # Create table, access
     conn.execute(
         f"""
