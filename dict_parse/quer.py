@@ -17,6 +17,7 @@ def query_palabra(palabra: str):
     ```
     """
     cursor = conn.cursor()
+    # print('sarching4', palabra)
     cursor.execute(
         f"""
         SELECT definicion
@@ -25,41 +26,35 @@ def query_palabra(palabra: str):
     """,
         (palabra,),
     )
-
-    result = cursor.fetchone()
-
-    conn.close()
-
-    if result:
-        return result
+    defi = cursor.fetchone()
+    # conn.close()
+    if defi:
+        return str(defi[0])
     else:
         return None
 
 
-def get_100():
-    cursor = conn.cursor()
-    cursor.execute(
-        f"""
-        SELECT *
-        FROM palabras
-        LIMIT 100
-    """
-    )
-    result = cursor.fetchone()
-    if result:
-        return result
-    else:
-        return None
+
 
 
 def loadall():
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM palabras")
+    cursor.execute("SELECT * FROM palabras ")
     rows = cursor.fetchall()
     for a in rows:
         print(a[0], "\n", a[1], f'\n{"#"*100}')
 
-loadall()
+# loadall()
 
+def tokenize(defi:str):
+    
+    defi= defi.replace('\n',' ')
+    limp = lambda x:x.replace('.','').replace(',','').replace('(','').replace(')','').replace('-','')
+    return map(limp, defi.split(' '))
+
+defi = query_palabra('obispo')
+for o in tokenize(defi):
+    print('PALABRA',o)
+    print('DEFIIII',query_palabra(o))
 # print(query_palabra('a'))
 # with open('pax.txt') as p:
