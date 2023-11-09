@@ -36,6 +36,8 @@
 
 // export default App;
 import React, { useState, useEffect } from 'react';
+const { Sequelize } = require('sequelize');
+
 
 function MyComponent() {
   const [inputWord, setInputWord] = useState('');
@@ -56,7 +58,7 @@ function MyComponent() {
             const firstDefinition = data[0].meanings[0].definitions[0].definition;
             setOutputDefinition(firstDefinition);
           } else {
-            setOutputDefinition('No definition found for the provided word.');
+            setOutputDefinition('No definition found');
           }
         }
       } catch (error) {

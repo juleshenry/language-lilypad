@@ -9,6 +9,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "sequelize": "^6.34.0",
+    "sqlite3": "^5.1.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -22,6 +24,11 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   },
   "browserslist": {
     "production": [
