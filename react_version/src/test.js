@@ -27,7 +27,11 @@ Entry.findAll({
     palabra: "lobo"
   }
 }).then(entries => {
-  console.log(entries);
+  if (entries.length) {
+    console.log(entries[0]['dataValues'].definicion);
+  } else {
+    console.error('word not found');
+  }
 }).catch(err => {
   console.error('Error fetching entries:', err);
 });
