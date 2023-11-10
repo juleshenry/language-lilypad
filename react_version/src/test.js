@@ -18,22 +18,31 @@ const Entry = sequelize.define('palabras', {
 }
 );
 
-
 sequelize.sync();
 
 // Query all entries
-Entry.findAll({
+let definir = (palabra) => Entry.findOne({
   where : {
-    palabra: "lobo"
+    palabra: palabra
   }
-}).then(entries => {
-  if (entries.length) {
-    console.log(entries[0]['dataValues'].definicion);
+}).then(cosa => {
+  if (cosa?.definicion) {
+    // console.log(cosa.definicion);
+    return (cosa.definicion);
   } else {
     console.error('word not found');
+    return 0;
   }
 }).catch(err => {
   console.error('Error fetching entries:', err);
+  return 0;
+});
+
+de = definir('locdateli')
+de.then((result) => {
+  console.log(result); // This will be called when the promise is resolved
+}).catch((error) => {
+  console.error(error); // This will be called if the promise is rejected
 });
 
 // (async () => {
