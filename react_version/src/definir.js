@@ -104,16 +104,16 @@ async function mapDefinirToWords(array) {
   }
 }
 
-const defy = "Se dice especialmente de las máquinas de vapor que, por estar montadas sobre ruedas a propósito, pueden trasladarse a donde sean necesarias. U. t. c. s. f."
+// const defy = "Se dice especialmente de las máquinas de vapor que, por estar montadas sobre ruedas a propósito, pueden trasladarse a donde sean necesarias. U. t. c. s. f."
 
-// Call the function
-mapDefinirToWords(defy.split(' '))
-  .then(result => {
-      result.forEach((x)=> {
-        console.log(x?.dataValues?.palabra, x?.dataValues?.definicion?.slice(0,27));
-      });
-  })
-  .catch(error => {
-      console.error(error); // Handle any errors that might occur
-  });
-module.exports = definir;
+// // Call the function
+// mapDefinirToWords(defy.split(' '))
+//   .then(result => {
+//       result.forEach((x)=> {
+//         console.log(x?.dataValues?.palabra, x?.dataValues?.definicion?.slice(0,27));
+//       });
+//   })
+//   .catch(error => {
+//       console.error(error); // Handle any errors that might occur
+//   });
+// module.exports = definir;

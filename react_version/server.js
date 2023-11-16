@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); // Import the cors middleware
-
+const deff = require('./src/definir');
 const app = express();
 const port = 8080;
 
@@ -15,7 +15,7 @@ app.post('/definir', (req, res) => {
 
   // For demonstration purposes, let's assume a simple definition
   const definition = `Defin: for ${term}`;
-
+  console.log(`@@@ ${term}`);
   res.json({ definicion: definition });
 });
 

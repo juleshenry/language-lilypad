@@ -13,6 +13,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "sequelize": "^6.35.0",
+    "sqlite3": "^5.1.6",
     "url": "^0.11.3",
     "web-vitals": "^3.5.0"
   },
