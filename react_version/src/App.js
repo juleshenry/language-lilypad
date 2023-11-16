@@ -36,8 +36,6 @@
 
 // export default App;
 import React, { useState, useEffect } from 'react';
-const { Sequelize } = require('sequelize');
-
 
 function MyComponent() {
   const [inputWord, setInputWord] = useState('');
@@ -51,15 +49,24 @@ function MyComponent() {
     const callApi = async () => {
       try {
         if (inputWord.trim() !== '') {
-          const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${inputWord}`);
+          const response = await fetch('http://localhost:8080/definir', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ term: inputWord }), // Include the term parameter in the request body
+          });
+    
           const data = await response.json();
-
-          if (Array.isArray(data) && data.length > 0) {
-            const firstDefinition = data[0].meanings[0].definitions[0].definition;
-            setOutputDefinition(firstDefinition);
-          } else {
-            setOutputDefinition('No definition found');
-          }
+          console.log(data);
+          // if (Array.isArray(data) && data.length > 0) {
+          //   console.log(data);
+          //   const firstDefinition = data[0].definicion;
+            
+          // } else {
+          //   setOutputDefinition('No definition found');
+          // }
+          setOutputDefinition(data?.definicion || 'no definición');
         }
       } catch (error) {
         console.error('Error:', error);

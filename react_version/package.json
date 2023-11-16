@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.1.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "sequelize": "^6.34.0",
-    "sqlite3": "^5.1.6",
-    "web-vitals": "^2.1.4"
+    "react-scripts": "^5.0.1",
+    "sequelize": "^6.35.0",
+    "url": "^0.11.3",
+    "web-vitals": "^3.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

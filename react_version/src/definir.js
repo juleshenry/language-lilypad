@@ -94,7 +94,7 @@ async function ass(pa) {
 //         console.error(error);
 //     });
 // Map an async function to the array of strings
-async function mapAsyncFunctionToStrings(array) {
+async function mapDefinirToWords(array) {
   try {
       const promises = array.map(str => definir(str));
       const results = await Promise.all(promises);
@@ -107,7 +107,7 @@ async function mapAsyncFunctionToStrings(array) {
 const defy = "Se dice especialmente de las máquinas de vapor que, por estar montadas sobre ruedas a propósito, pueden trasladarse a donde sean necesarias. U. t. c. s. f."
 
 // Call the function
-mapAsyncFunctionToStrings(defy.split(' '))
+mapDefinirToWords(defy.split(' '))
   .then(result => {
       result.forEach((x)=> {
         console.log(x?.dataValues?.palabra, x?.dataValues?.definicion?.slice(0,27));
