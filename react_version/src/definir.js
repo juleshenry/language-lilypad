@@ -39,7 +39,14 @@ async function definir(palabra) {
 async function ass(pa) {
   try {
       const result1 = await definir(pa);
-      const result2 = await definir('locomóvil');
+      // const result2 = await definir('locomóvil');
+      return result2;
+  } catch (error) {
+      // Handle any errors that might occur in the chain
+      console.error(error);
+  }
+}
+
       // const a = await result2.definicion.split(" ").map(word => 
       //   definir(word).then(finalResult => {
       //     // Use the final result here
@@ -49,13 +56,6 @@ async function ass(pa) {
       //     return (error);
       //   })  
       // );
-      return result2;
-  } catch (error) {
-      // Handle any errors that might occur in the chain
-      console.error(error);
-  }
-}
-
 // ass('loción').then(finalResult => {
 //   // Use the final result here
 //   console.log(finalResult.definicion)
@@ -116,4 +116,4 @@ async function mapDefinirToWords(array) {
 //   .catch(error => {
 //       console.error(error); // Handle any errors that might occur
 //   });
-// module.exports = definir;
+module.exports = definir;
