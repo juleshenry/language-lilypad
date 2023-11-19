@@ -27,52 +27,8 @@ const Entry = sequelize.define(
 
 sequelize.sync();
 
-// async function definir(palabra) {
-//     console.log('pegar');
-//     try {
-//         const entries = await Entry.findOne({
-//             where: {
-//                 palabra: palabra
-//             }
-//         });
-//         return entries;
-//     } catch (error) {
-//         throw new Error('Error fetching entries');
-//     }
-// }
-
-async function definir(palabra) {
-  console.log("pegar");
-  return new Promise(async (resolve, reject) => {
-    try {
-      const entries = await Entry.findOne({
-        where: {
-          palabra: palabra,
-        },
-      });
-      // return entries;
-      resolve(entries);
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-function syncDef(palabra) {
-  // Returning a promise from syncFunc
-  return new Promise(async (resolve, reject) => {
-    try {
-      // Calling asyncFunc using await
-      const result = await definir(palabra);
-      resolve(result);
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
 // An asynchronous function that queries the database
-async function asyncFunc() {
+async function asincDefinir() {
   try {
     // Simulating a Sequelize query to find a user
     const user = await Entry.findOne({ where: { palabra: "loción" } });
@@ -83,10 +39,10 @@ async function asyncFunc() {
 }
 
 // Synchronous function that calls asyncFunc
-function syncFunc() {
+function sincDefinir() {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await asyncFunc();
+      const result = await asincDefinir();
       resolve(result);
     } catch (error) {
       reject(error);
@@ -102,7 +58,7 @@ router.get("/", (req, res) => {
       .status(400)
       .json({ error: "Palabra not provided in the request body" });
   }
-  syncFunc(palabra)
+  sincDefinir(palabra)
     .then((result) => {
       console.log("?");
       console.log(result); // Output: Async operation complete
