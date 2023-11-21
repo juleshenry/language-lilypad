@@ -28,10 +28,10 @@ const Entry = sequelize.define(
 sequelize.sync();
 
 // An asynchronous function that queries the database
-async function asincDefinir() {
+async function asincDefinir(palabra) {
   try {
     // Simulating a Sequelize query to find a user
-    const user = await Entry.findOne({ where: { palabra: "loción" } });
+    const user = await Entry.findOne({ where: { palabra: palabra } });
     return user; // Returning the result of the query
   } catch (error) {
     throw error; // Propagating any errors that occurred during the query
@@ -39,10 +39,10 @@ async function asincDefinir() {
 }
 
 // Synchronous function that calls asyncFunc
-function sincDefinir() {
+function sincDefinir(palabra) {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await asincDefinir();
+      const result = await asincDefinir(palabra);
       resolve(result);
     } catch (error) {
       reject(error);
@@ -56,7 +56,7 @@ router.get("/", (req, res) => {
   if (!palabra) {
     return res
       .status(400)
-      .json({ error: "Palabra not provided in the request body" });
+      .send({ error: "Palabra not provided in the request body" });
   }
   sincDefinir(palabra)
     .then((result) => {

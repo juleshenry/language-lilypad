@@ -6,6 +6,14 @@ const definirRoutes = require("./src/routes/definir"); // Import the definir rou
 
 const app = express();
 app.use(bodyParser.json());
+const cors=require("cors");
+const corsOptions ={
+   origin:'*', 
+  //  credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+
+app.use(cors()) // Use this after the variable declaration
 
 // Use the definir route
 app.use("/definir", definirRoutes);
