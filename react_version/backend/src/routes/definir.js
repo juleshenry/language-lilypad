@@ -56,7 +56,7 @@ router.get("/", (req, res) => {
   if (!palabra) {
     return res
       .status(400)
-      .send({ error: "Palabra not provided in the request body" });
+      .json({ error: "Palabra not provided in the request body" });
   }
   sincDefinir(palabra)
     .then((result) => {

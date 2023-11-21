@@ -49,12 +49,12 @@ function MyComponent() {
     const callApi = async () => {
       try {
         if (inputWord.trim() !== '') {
-          const response = await fetch('http://localhost:8080/definir', {
-            method: 'POST',
+          const response = await fetch('http://localhost:3001/definir', {
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ term: inputWord }), // Include the term parameter in the request body
+            body: JSON.stringify({ palabra: inputWord }), // Include the term parameter in the request body
           });
     
           const data = await response.json();
