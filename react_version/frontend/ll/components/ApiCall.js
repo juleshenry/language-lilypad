@@ -11,28 +11,25 @@ const ApiCall = () => {
 
   const handleApiCall = async () => {
     try {
-      console.log(`we called ${inputValue}`);
-      //   const response = await axios.get(`http://localhost:3001/definir?palabra=${inputValue}`);
-      // curl -X GET -H "Content-Type: application/json" -d '{"palabra": "sin"}' http://localhost:3031/definir
-
-        // `http://localhost:3031/definir?palabra=${inputValue}`,
-      const response = await axios.get(
-        `https://api.kanye.rest/`,
-        // {palabra : inputValue},
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json;charset=utf-8",
-        //   },
-        // },
+      console.log(`Finna call ${inputValue}`);
+      let d = {'palabra' : inputValue};
+      const res = await fetch('http://localhost:3000/definir',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(d), 
+      }
       );
-      console.log(response);
-      setResult(response.data); // Adjust this based on your API response structure
+      console.log(res)
+      setResult(res); // Adjust this based on your API response structure
     } catch (error) {
       console.error("Error fetching data:", error);
       setResult("Error fetching data");
     }
   };
-
+// `https://api.kanye.rest/`,
   return (
     <div>
       <div style={{ textAlign: "center", margin: "20px" }}>
@@ -41,10 +38,24 @@ const ApiCall = () => {
       </div>
       <div style={{ textAlign: "center" }}>
         <p>API Result:</p>
-        <p>{result.quote}</p>
+        <p>{result || 'shoot his grandmother up'}</p>
       </div>
     </div>
   );
 };
 
 export default ApiCall;
+
+      // const response = await axios.get(`http://localhost:3031/definir?palabra=${inputValue}`);
+      // curl -X GET -H "Content-Type: application/json" -d '{"palabra": "sin"}' http://localhost:3031/definir
+      // const response = await axios.post(
+      //   `http://localhost:3000/definir`,
+      //   JSON.stringify({
+      //     palabra: inputValue
+      //   }),
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json;charset=utf-8",
+      //     }
+      //   }
+      // );
