@@ -3,7 +3,7 @@ import axios from "axios";
 
 const ApiCall = () => {
   const [inputValue, setInputValue] = useState("");
-  const [result, setResult] = useState("");
+  const [response, setResponse] = useState("");
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -22,11 +22,11 @@ const ApiCall = () => {
         body: JSON.stringify(d), 
       }
       );
-      console.log(res)
-      setResult(res); // Adjust this based on your API response structure
+      const data = await res.json();
+      setResponse(data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setResult("Error fetching data");
+      setResponse("Error fetching data");
     }
   };
 // `https://api.kanye.rest/`,
@@ -38,7 +38,7 @@ const ApiCall = () => {
       </div>
       <div style={{ textAlign: "center" }}>
         <p>API Result:</p>
-        <p>{result || 'shoot his grandmother up'}</p>
+        <p>{JSON.stringify(response, null, 2)}</p>
       </div>
     </div>
   );

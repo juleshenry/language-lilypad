@@ -6,16 +6,16 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Next.js API Call App</title>
+        <title>Language Lilypad</title>
         <meta name="description" content="Next.js app with API call" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1 style={{ textAlign: 'center' }}>Next.js API Call App</h1>
-        <ApiCall />
+        <h1 style={{ textAlign: 'center' }}>Language Lilypad</h1>
+        <ApiCall/>
       </main>
       <footer>
-        <p style={{ textAlign: 'center' }}>Footer content here</p>
+        <p style={{ textAlign: 'center' }}>🪷 where words jump to life! 🌺🐸</p>
       </footer>
     </div>
   );
