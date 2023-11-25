@@ -24,3 +24,5 @@ Fresas :
 Y : 
 
 Más :
+
+![ejemplo](prev.png)
