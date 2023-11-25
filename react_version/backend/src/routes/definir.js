@@ -31,6 +31,7 @@ async function asincDefinir(palabra) {
   try {
     // Simulating a Sequelize query to find a user
     const user = await Entry.findOne({ where: { palabra: palabra } });
+    
     return user; // Returning the result of the query
   } catch (error) {
     consoel.log('SQL error');
@@ -43,7 +44,25 @@ function sincDefinir(palabra) {
   return new Promise(async (resolve, reject) => {
     try {
       const result = await asincDefinir(palabra);
-      // console.log(result.dataValues);
+      let def_words = result?.dataValues?.definicion.
+      replaceAll('\n',' ').
+      replaceAll(',','').
+      replaceAll('.','').
+      replaceAll('-','').
+      replaceAll('-','').
+      replaceAll("'",'').
+      replaceAll('(','').split(' ');
+      let pal_defs = await Promise.all(def_words.map(async (item) => {
+          if (!item ){
+            return {definicion: "none"};
+          }
+          let x = await asincDefinir(item);
+          return {definicion: x?.dataValues?.definicion };
+        })
+      )
+      pal_defs.forEach((element, ix) => {
+        console.log(def_words[ix],'::::',element);
+      });
       resolve(result);
     } catch (error) {
       console.log('Resolve DB error');
@@ -67,7 +86,7 @@ router.post("/", (req, res) => {
     .then((result) => {
       console.log("sincronizado activado");
       console.log(result?.dataValues); // Output: Async operation complete
-      res.json({definicion : result?.dataValues?.definicion});
+      res.json({cooooo : result?.dataValues?.definicion});
     })
     .catch((error) => {
       console.error(error.message);
