@@ -1,1 +1,4 @@
 src_langz
+node_modules
+react_version/backend/node_modules
+react_version/frontend/langlilypad/node_modules
