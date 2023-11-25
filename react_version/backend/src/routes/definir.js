@@ -77,7 +77,7 @@ function sincDefinir(palabra) {
       cool = {
         palabra: palabra,
         definicion: result?.dataValues?.definicion,
-        palabras: def_map
+        palabras: Object.fromEntries(def_map)
       };  
       resolve(cool);
       // resolve(result);
@@ -103,7 +103,7 @@ router.post("/", (req, res) => {
     .then((result) => {
       console.log("sincronizado activado");
       console.log(result); // Output: Async operation complete
-      res.json({ cooooo: result?.dataValues?.definicion });
+      res.json(result);
     })
     .catch((error) => {
       console.error(error.message);
