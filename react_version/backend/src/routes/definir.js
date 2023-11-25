@@ -31,10 +31,10 @@ async function asincDefinir(palabra) {
   try {
     // Simulating a Sequelize query to find a user
     const user = await Entry.findOne({ where: { palabra: palabra } });
-    
+
     return user; // Returning the result of the query
   } catch (error) {
-    consoel.log('SQL error');
+    consoel.log("SQL error");
     throw error; // Propagating any errors that occurred during the query
   }
 }
@@ -44,28 +44,45 @@ function sincDefinir(palabra) {
   return new Promise(async (resolve, reject) => {
     try {
       const result = await asincDefinir(palabra);
-      let def_words = result?.dataValues?.definicion.
-      replaceAll('\n',' ').
-      replaceAll(',','').
-      replaceAll('.','').
-      replaceAll('-','').
-      replaceAll('-','').
-      replaceAll("'",'').
-      replaceAll('(','').split(' ');
-      let pal_defs = await Promise.all(def_words.map(async (item) => {
-          if (!item ){
-            return {definicion: "none"};
+      // parse definicion
+      let def_map = new Map();
+      let def_words = result?.dataValues?.definicion
+        .replaceAll("\n", " ")
+        .replaceAll(",", "")
+        .replaceAll(".", "")
+        .replaceAll("-", "")
+        .replaceAll("-", "")
+        .replaceAll("'", "")
+        .replaceAll("(", "")
+        .split(" ");
+      if (def_words) {
+        let pal_defs = await Promise.all(
+        def_words.map(async (item) => {
+          if (!item) {
+            return { definicion: undefined };
           }
-          let x = await asincDefinir(item);
-          return {definicion: x?.dataValues?.definicion };
-        })
-      )
-      pal_defs.forEach((element, ix) => {
-        console.log(def_words[ix],'::::',element);
-      });
-      resolve(result);
+          let x = await asincDefinir(item.toLowerCase());
+          return { definicion: x?.dataValues?.definicion };
+        }),
+        );
+        pal_defs.forEach((element, ix) => {
+          if (element?.definicion) {
+            def_map.set(def_words[ix], element.definicion);
+          }
+        });
+      }
+      // for (const [x, y] of def_map.entries()) {
+      //   console.log(x, y);
+      // }
+      cool = {
+        palabra: palabra,
+        definicion: result?.dataValues?.definicion,
+        palabras: def_map
+      };  
+      resolve(cool);
+      // resolve(result);
     } catch (error) {
-      console.log('Resolve DB error');
+      console.log("Resolve DB error");
       reject(error);
     }
   });
@@ -74,9 +91,9 @@ function sincDefinir(palabra) {
 // Define the route for '/definir'
 router.post("/", (req, res) => {
   const palabra = req.body?.palabra;
-  console.log('1o paso, recibido :');
+  console.log("1o paso, recibido :");
   console.log(req.body);
-  console.log('*'.repeat(100))
+  console.log("*".repeat(100));
   if (!palabra) {
     return res
       .status(400)
@@ -85,8 +102,8 @@ router.post("/", (req, res) => {
   sincDefinir(palabra)
     .then((result) => {
       console.log("sincronizado activado");
-      console.log(result?.dataValues); // Output: Async operation complete
-      res.json({cooooo : result?.dataValues?.definicion});
+      console.log(result); // Output: Async operation complete
+      res.json({ cooooo: result?.dataValues?.definicion });
     })
     .catch((error) => {
       console.error(error.message);

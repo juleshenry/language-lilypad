@@ -1,21 +1,19 @@
 // server.js
 const express = require("express");
-const cors=require("cors");
-const bodyParser = require('body-parser');
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const definirRoutes = require("./src/routes/definir"); // Import the definir route
 
 const app = express();
 
 app.use(bodyParser.json());
 
-
 const corsOptions = {
-  origin: 'http://localhost:3333', // replace with your client-side app's URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: "http://localhost:3333", // replace with your client-side app's URL
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // enable passing cookies, authorization headers, etc.
   optionsSuccessStatus: 204, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
-
 
 app.use(cors(corsOptions));
 // app.use(cors()) // Use this after the variable declaration
@@ -23,18 +21,20 @@ app.use(cors(corsOptions));
 // Use the definir route
 app.use("/definir", definirRoutes);
 
-
 // Define a route for GET requests to /api/boo
-app.post('/api/ghoul', (req, res) => {
+app.post("/api/ghoul", (req, res) => {
   console.log(req.body);
-  console.log('@@@ GHOUL @@@');
-  res.json({ message: 'Ghoul! This is the response from the /api/ghoul endpoint.' });
+  console.log("@@@ GHOUL @@@");
+  res.json({
+    message: "Ghoul! This is the response from the /api/ghoul endpoint.",
+  });
 });
 
-
 // Define a route for GET requests to /api/boo
-app.get('/api/boo', (req, res) => {
-  res.json({ message: 'Booz! This is the response from the /api/boo endpoint.' });
+app.get("/api/boo", (req, res) => {
+  res.json({
+    message: "Booz! This is the response from the /api/boo endpoint.",
+  });
 });
 
 // // Custom error handling middleware

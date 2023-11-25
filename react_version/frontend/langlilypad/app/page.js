@@ -66,7 +66,7 @@ const Home = () => {
 
       <h1>Language Lilypad Serch</h1>
         <div style={{ textAlign: "center", margin: "20px" }}>
-          <input type="text" value={inputValue} onChange={handleInputChange} />
+          <input style={{height: "40px", color: "red"}} type="text" value={inputValue} onChange={handleInputChange} />
           <button onClick={definirData}>Call API</button>
         </div>
         <div style={{ textAlign: "center" }}>
