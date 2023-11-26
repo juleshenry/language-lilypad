@@ -25,3 +25,11 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
+.clickable-word {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  margin: 0 5px;
+}

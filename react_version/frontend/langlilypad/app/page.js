@@ -52,18 +52,37 @@ const Home = () => {
     }
   };
 
+  const makeWordsClickable = () => {
+    const words = response?.definicion?.split(' ');
+    if (! words) {
+      return (<span>Nada.</span>);
+    }
+    return words.map((word, index) => (
+      <span
+        key={index}
+        className='clickable-word'
+        onClick={() => callAPI(word)}
+      >
+        {word + (index === words.length - 1 ? '' : ' ')}
+      </span>
+    ));
+  };
+
   return (
     <div>
-      
+    <title>Clickable Words</title>
+    <p>
+      {makeWordsClickable(JSON.stringify(response?.definicion, null, 2))}
+    </p>
+    
       <h1>Language Lilypad Button  Test</h1>
-      <button onClick={fetchData}>Fetch Data from /api/boo</button>
+      <button onClick={fetchData}>Fetch Data from /definir</button>
         {response && (
           <div>
-            <h2>Response from /api/boo:</h2>
+            <h2>Response from /definir:</h2>
             <pre>{JSON.stringify(response, null, 2)}</pre>
           </div>
         )}
-
       <h1>Language Lilypad Serch</h1>
         <div style={{ textAlign: "center", margin: "20px" }}>
           <input style={{height: "40px", color: "red"}} type="text" value={inputValue} onChange={handleInputChange} />
@@ -76,5 +95,7 @@ const Home = () => {
     </div>
   );
 };
+
+
 
 export default Home;
