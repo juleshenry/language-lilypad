@@ -5,8 +5,13 @@ const Home = () => {
   const [response, setResponse] = useState(null);
   
   const [inputValue, setInputValue] = useState("");
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const handleInputClick = (e) => {
+    setInputValue(e);
   };
 
   // fetch hard-coded BE call
@@ -61,7 +66,7 @@ const Home = () => {
       <span
         key={index}
         className='clickable-word'
-        onClick={() => callAPI(word)}
+        onClick={() => {handleInputClick(word);definirData()}}
       >
         {word + (index === words.length - 1 ? '' : ' ')}
       </span>
@@ -70,7 +75,7 @@ const Home = () => {
 
   return (
     <div>
-    <title>Clickable Words</title>
+
     <p>
       {makeWordsClickable(JSON.stringify(response?.definicion, null, 2))}
     </p>
