@@ -84,27 +84,18 @@ const Home = () => {
 
   return (
     <div>
-
-    <p>
-      {makeWordsClickable(JSON.stringify(response?.definicion, null, 2))}
-    </p>
-    
-      <h1>Language Lilypad Button  Test</h1>
-      <button onClick={fetchData}>Fetch Data from /definir</button>
-        {response && (
-          <div>
-            <h2>Response from /definir:</h2>
-            <pre>{JSON.stringify(response, null, 2)}</pre>
-          </div>
-        )}
-      <h1>Language Lilypad Serch</h1>
         <div style={{ textAlign: "center", margin: "20px" }}>
+          <h1>Language Lilypad</h1>
+          <h1>🪷🌺🐸🌺🪷</h1>
           <input style={{height: "40px", color: "red"}} type="text" value={inputValue} onChange={handleInputChange} />
           <button onClick={definirData}>Call API</button>
         </div>
         <div style={{ textAlign: "center" }}>
-          <p>API Result:</p>
-          <p>{JSON.stringify(response, null, 2)}</p>
+          <p>
+            {makeWordsClickable(JSON.stringify(response?.definicion, null, 2))}
+          </p>
+          {/* <p>API Result:</p> */}
+          {/* <p>{JSON.stringify(response, null, 2)}</p> */}
         </div>  
     </div>
   );
@@ -113,3 +104,4 @@ const Home = () => {
 
 
 export default Home;
+
