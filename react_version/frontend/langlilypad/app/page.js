@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Home = () => {
   const [response, setResponse] = useState(null);
@@ -10,8 +10,17 @@ const Home = () => {
     setInputValue(e.target.value);
   };
 
-  const handleInputClick = (e) => {
-    setInputValue(e);
+  useEffect(() => {
+    // This code runs after the component has rendered and inputValue has been updated
+    console.log('Input has become... ', inputValue,' ...!');
+    definirData();
+  }, [inputValue]); // The effect will run whenever inputValue changes
+
+  const handleInputClick = async (word) => {
+    console.log('Setting...', word,'... to inputValue');
+    setInputValue(word);
+    // console.log('Input has become... ', inputValue,' ...!');
+    
   };
 
   // fetch hard-coded BE call
@@ -66,7 +75,7 @@ const Home = () => {
       <span
         key={index}
         className='clickable-word'
-        onClick={() => {handleInputClick(word);definirData()}}
+        onClick={async () => {await handleInputClick(word);}}
       >
         {word + (index === words.length - 1 ? '' : ' ')}
       </span>
