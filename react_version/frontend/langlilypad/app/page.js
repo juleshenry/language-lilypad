@@ -84,11 +84,10 @@ const Home = () => {
 
   return (
     <div>
-        <div style={{ textAlign: "center", margin: "20px" }}>
+        <div style={{ textAlign: "center", margin: "20px","font-size": "69px" }}>
           <h1>Language Lilypad</h1>
           <h1>🪷🌺🐸🌺🪷</h1>
-          <input style={{height: "40px", color: "red"}} type="text" value={inputValue} onChange={handleInputChange} />
-          <button onClick={definirData}>Call API</button>
+          <input style={{textAlign: "center", height: "50px", color: "#5EDD5F", "font-size": "40px"}} type="text" value={inputValue} onChange={handleInputChange} />
         </div>
         <div style={{ textAlign: "center" }}>
           <p>
