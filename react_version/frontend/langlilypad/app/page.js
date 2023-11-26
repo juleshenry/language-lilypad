@@ -74,6 +74,18 @@ const Home = () => {
         <h1>Language Lilypad</h1>
         <h1>🪷🌺🐸🌺🪷</h1>
         <input
+          className="input-text"
+          style={{
+            textAlign: "center",
+            height: "50px",
+            color: "#5EDD5F",
+            "fontSize": "40px",
+          }}
+          type="text"
+        />
+        
+        <input
+          className="translated-text"
           style={{
             textAlign: "center",
             height: "50px",
