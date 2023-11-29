@@ -68,11 +68,65 @@ const Home = () => {
     ));
   };
 
+  function displayLanguage() {
+    var selectedLanguage = document.getElementById("languageDropdown").value;
+    document.getElementById("lang-choice").innerText = selectedLanguage;
+    // You can add logic here to perform actions based on the selected language
+  }
   return (
     <div>
       <div style={{ textAlign: "center", margin: "20px", "fontSize": "69px" }}>
         <h1>Language Lilypad</h1>
         <h1>🪷🌺🐸🌺🪷</h1>
+        <label for="languageDropdown">Select Language:</label>
+        <select id="lang-choice" onchange="displayLanguage()">
+            <option value="albanian">Albanian 🇦🇱</option>
+            <option value="arabic">Arabic 🇦🇪</option>
+            <option value="azerbaijani">Azerbaijani 🇦🇿</option>
+            <option value="bengali">Bengali 🇧🇩</option>
+            <option value="bulgarian">Bulgarian 🇧🇬</option>
+            <option value="catalan">Catalan 🇦🇩</option>
+            <option value="chinese">Chinese 🇨🇳</option>
+            <option value="czech">Czech 🇨🇿</option>
+            <option value="danish">Danish 🇩🇰</option>
+            <option value="dutch">Dutch 🇳🇱</option>
+            <option value="english">English 🇬🇧</option>
+            <option value="esperanto">Esperanto 🌐</option>
+            <option value="estonian">Estonian 🇪🇪</option>
+            <option value="finnish">Finnish 🇫🇮</option>
+            <option value="french">French 🇫🇷</option>
+            <option value="german">German 🇩🇪</option>
+            <option value="greek">Greek 🇬🇷</option>
+            <option value="hebrew">Hebrew 🇮🇱</option>
+            <option value="hindi">Hindi 🇮🇳</option>
+            <option value="hungarian">Hungarian 🇭🇺</option>
+            <option value="indonesian">Indonesian 🇮🇩</option>
+            <option value="irish">Irish ☘️</option>
+            <option value="italian">Italian 🇮🇹</option>
+            <option value="japanese">Japanese 🇯🇵</option>
+            <option value="korean">Korean 🇰🇷</option>
+            <option value="latvian">Latvian 🇱🇻</option>
+            <option value="lithuanian">Lithuanian 🇱🇹</option>
+            <option value="malay">Malay 🇲🇾</option>
+            <option value="norwegian">Norwegian 🇳🇴</option>
+            <option value="persian">Persian 🇮🇷</option>
+            <option value="polish">Polish 🇵🇱</option>
+            <option value="portuguese">Portuguese 🇵🇹</option>
+            <option value="romanian">Romanian 🇷🇴</option>
+            <option value="russian">Russian 🇷🇺</option>
+            <option value="serbian">Serbian 🇷🇸</option>
+            <option value="slovak">Slovak 🇸🇰</option>
+            <option value="slovenian">Slovenian 🇸🇮</option>
+            <option value="spanish">Spanish 🇪🇸</option>
+            <option value="swedish">Swedish 🇸🇪</option>
+            <option value="tagalog">Tagalog 🇵🇭</option>
+            <option value="thai">Thai 🇹🇭</option>
+            <option value="turkish">Turkish 🇹🇷</option>
+            <option value="ukranian">Ukrainian 🇺🇦</option>
+        </select>
+
+        <p>Selected Language: <span id="selectedLanguage"></span></p>
+        <div>
         <input
           className="input-text"
           style={{
@@ -83,7 +137,8 @@ const Home = () => {
           }}
           type="text"
         />
-        
+        </div>
+        <div>
         <input
           className="translated-text"
           style={{
@@ -96,6 +151,7 @@ const Home = () => {
           value={inputValue}
           onChange={handleInputChange}
         />
+        </div>
       </div>
       <div style={{ textAlign: "center" }}>
         <p>
