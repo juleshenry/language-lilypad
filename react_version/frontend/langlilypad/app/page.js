@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from "react";
 
 const Home = () => {
-  const [response, setResponse] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [dictionaryResponse, setDictionaryResponse] = useState(null);
+  const [dictionaryString, setDictionaryString] = useState("");
+
+  const [translationResponse, setTranslationResponse] = useState(null);
+  const [translationString, setTranslationString] = useState("");
+
 
   const limpia = (e) => {
     return e
@@ -16,23 +20,31 @@ const Home = () => {
       .replaceAll("(", "").toLowerCase();
   };
 
-  const handleInputChange = (e) => {
-    setInputValue(limpia(e.target.value));
+  const handleDictionaryChange = (e) => {
+    setDictionaryString(limpia(e.target.value));
+  };
+
+  const handleTranslationChange = (e) => {
+    setTranslationString(limpia(e.target.value));
   };
 
   useEffect(() => {
     definirData();
-  }, [inputValue]);
+  }, [dictionaryString]);
+
+  useEffect(() => {
+    traducirData();
+  }, [translationString])
 
   const handleInputClick = async (word) => {
-    setInputValue(limpia(word));
+    setdictionaryString(limpia(word));
   };
 
   // fetch dynamic BE calls
   const definirData = async () => {
     try {
-      console.log("fetching " + limpia(inputValue) + " from backend");
-      let d = { palabra: limpia(inputValue) };
+      console.log("fetching " + limpia(dictionaryString) + " from backend");
+      let d = { palabra: limpia(dictionaryString) };
       const res = await fetch("http://localhost:3000/definir", {
         method: "POST",
         headers: {
@@ -41,14 +53,32 @@ const Home = () => {
         body: JSON.stringify(d),
       });
       const data = await res.json();
-      setResponse(data);
+      setDictionaryResponse(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const traducirData = async () => {
+    try {
+      console.log("fetching " + limpia(translationString) + " from backend");
+      let d = { palabra: limpia(translationString) };
+      const res = await fetch("http://127.0.0.1:5000/traducir", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(d),
+      });
+      const data = await res.json();
+      setTranslationResponse(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   const makeWordsClickable = () => {
-    const words = response?.definicion?.split(" ");
+    const words = dictionaryResponse?.definicion?.split(" ");
     if (!words) {
       return <span>Nada.</span>;
     }
@@ -57,7 +87,7 @@ const Home = () => {
       <span
         key={index}
         className={
-          word in response?.palabras ? "clickable-word" : "unclickable-word"
+          word in dictionaryResponse?.palabras ? "clickable-word" : "unclickable-word"
         }
         onClick={async () => {
           await handleInputClick(word);
@@ -73,6 +103,7 @@ const Home = () => {
     document.getElementById("selectedLanguage").innerText = selectedLanguage;
     // You can add logic here to perform actions based on the selected language
   }
+
   return (
     <div>
       <div style={{ textAlign: "center", margin: "20px", "fontSize": "69px" }}>
@@ -135,11 +166,13 @@ const Home = () => {
             "fontSize": "40px",
           }}
           type="text"
+          value={translationString}
+          onChange={handleTranslationChange}
         />
         </div>
         <div>
         <input
-          className="translated-text"
+          className="dictionary-text"
           style={{
             textAlign: "center",
             height: "50px",
@@ -147,14 +180,14 @@ const Home = () => {
             "fontSize": "40px",
           }}
           type="text"
-          value={inputValue}
-          onChange={handleInputChange}
+          value={dictionaryString}
+          onChange={handleDictionaryChange}
         />
         </div>
       </div>
       <div style={{ textAlign: "center" }}>
         <p>
-          {makeWordsClickable(JSON.stringify(response?.definicion, null, 2))}
+          {makeWordsClickable(JSON.stringify(dictionaryResponse?.definicion, null, 2))}
         </p>
         {/* <p>API Result:</p> */}
         {/* <p>{JSON.stringify(response, null, 2)}</p> */}

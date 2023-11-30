@@ -52,9 +52,9 @@ def translate_text(text, from_code, out_code):
     return from_to_text(from_code, out_code, text)
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    available_packages = argostranslate.package.get_available_packages()
-    print(*sorted(set([str(a).split(' ')[0] for a in available_packages])), sep='\n')
+    app.run(debug=True)
+    # available_packages = argostranslate.package.get_available_packages()
+    # print(*sorted(set([str(a).split(' ')[0] for a in available_packages])), sep='\n')
     # text = "The pretty girl has a bouquet of red flags"
     # x = from_to_text("en","zh",text)
     # print(x)
