@@ -69,8 +69,8 @@ const Home = () => {
   };
 
   function displayLanguage() {
-    var selectedLanguage = document.getElementById("languageDropdown").value;
-    document.getElementById("lang-choice").innerText = selectedLanguage;
+    var selectedLanguage = document.getElementById("lang-choice").value;
+    document.getElementById("selectedLanguage").innerText = selectedLanguage;
     // You can add logic here to perform actions based on the selected language
   }
   return (
@@ -78,8 +78,8 @@ const Home = () => {
       <div style={{ textAlign: "center", margin: "20px", "fontSize": "69px" }}>
         <h1>Language Lilypad</h1>
         <h1>🪷🌺🐸🌺🪷</h1>
-        <label for="languageDropdown">Select Language:</label>
-        <select id="lang-choice" onchange="displayLanguage()">
+        <label id="languageDropdown">Select Language:</label>
+        <select id="lang-choice" onChange={displayLanguage}>
             <option value="albanian">Albanian 🇦🇱</option>
             <option value="arabic">Arabic 🇦🇪</option>
             <option value="azerbaijani">Azerbaijani 🇦🇿</option>
@@ -124,8 +124,7 @@ const Home = () => {
             <option value="turkish">Turkish 🇹🇷</option>
             <option value="ukranian">Ukrainian 🇺🇦</option>
         </select>
-
-        <p>Selected Language: <span id="selectedLanguage"></span></p>
+        <p><span id="selectedLanguage">Selected Language: </span></p>
         <div>
         <input
           className="input-text"
