@@ -1,4 +1,4 @@
-# language-lilypad
+# What is Language Lilypad?
 
 In this project, we leverage Rust to make a dictionary via async API calls to a text box. The definitions are loaded as they are typed.
 
@@ -7,22 +7,26 @@ Furthermore, for every word in the definition, a definition is provided via hype
 Hence, when using this dictionary, one may leap-frog from word to word, as if they were lilypads.
 
 
-Example : 
+## Getting Started
 
-Rojo : color de manzanas, chiles, fresas, y más.
+First, run the backend dictionary server in `react_version/backend`:
 
-Color : 
+```bash
+node server.js
+```
+Next, run the backend translation server in `react_version`:
 
-De :
+```bash
+python3 translation_server.py
+```
 
-Manzanas
+Finally, run the frotend Next server in `react_version/frontend/languagelilypad`:
 
-Chiles : 
+```bash
+npx next dev --port 3333
+```
 
-Fresas : 
+Open [http://localhost:3333](http://localhost:3333) with your browser to see the result.
 
-Y : 
 
-Más :
-
-![ejemplo](prev.png)
+![ejemplo](language_lilypad.gif)

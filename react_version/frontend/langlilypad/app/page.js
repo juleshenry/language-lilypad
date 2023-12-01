@@ -97,7 +97,7 @@ const Home = () => {
   const makeWordsClickable = () => {
     const words = dictionaryResponse?.definicion?.split(" ");
     if (!words) {
-      return <span>Could find a definition.</span>;
+      return <span>Could not find a definition.</span>;
     }
     // console.log( new Map(Object.entries(response?.palabras)).keys() );
     return words.map((word, index) => (
@@ -116,8 +116,8 @@ const Home = () => {
   };
 
   function displayLanguage() {
-    var selectedLanguage = document.getElementById("lang-choice").value;
-    document.getElementById("selectedLanguage").innerText = selectedLanguage;
+    var selectedLanguage = document.getElementById("input-lang-choice").value;
+    document.getElementById("selectedInputLanguage").innerText = selectedLanguage;
   }
 
   return (
@@ -125,8 +125,8 @@ const Home = () => {
       <div style={{ textAlign: "center", margin: "20px", "fontSize": "69px" }}>
         <h1>Language Lilypad</h1>
         <h1>🪷🌺🐸🌺🪷</h1>
-        <label id="languageDropdown">Input Language:</label>
-        <select id="lang-choice" onChange={displayLanguage}>
+        <label id="inputLanguageDropdown">Input:</label>
+        <select id="input-lang-choice" onChange={displayLanguage}>
             <option value="Albanian">Albanian 🇦🇱</option>
             <option value="Arabic">Arabic 🇦🇪</option>
             <option value="Azerbaijani">Azerbaijani 🇦🇿</option>
@@ -171,7 +171,55 @@ const Home = () => {
             <option value="turkish">Turkish 🇹🇷</option>
             <option value="ukranian">Ukrainian 🇺🇦</option>
         </select>
-        <p><span id="selectedLanguage">English</span></p>
+        <p>
+          <label id="outputLanguageDropdown">Output:</label>
+          <select id="output-lang-choice" onChange={displayLanguage}>
+              <option value="Albanian">Albanian 🇦🇱</option>
+              <option value="Arabic">Arabic 🇦🇪</option>
+              <option value="Azerbaijani">Azerbaijani 🇦🇿</option>
+              <option value="Bengali">Bengali 🇧🇩</option>
+              <option value="bulgarian">Bulgarian 🇧🇬</option>
+              <option value="catalan">Catalan 🇦🇩</option>
+              <option value="chinese">Chinese 🇨🇳</option>
+              <option value="czech">Czech 🇨🇿</option>
+              <option value="danish">Danish 🇩🇰</option>
+              <option value="dutch">Dutch 🇳🇱</option>
+              <option value="english">English 🇬🇧</option>
+              <option value="esperanto">Esperanto 🌐</option>
+              <option value="estonian">Estonian 🇪🇪</option>
+              <option value="finnish">Finnish 🇫🇮</option>
+              <option value="french">French 🇫🇷</option>
+              <option value="german">German 🇩🇪</option>
+              <option value="greek">Greek 🇬🇷</option>
+              <option value="hebrew">Hebrew 🇮🇱</option>
+              <option value="hindi">Hindi 🇮🇳</option>
+              <option value="hungarian">Hungarian 🇭🇺</option>
+              <option value="indonesian">Indonesian 🇮🇩</option>
+              <option value="irish">Irish ☘️</option>
+              <option value="italian">Italian 🇮🇹</option>
+              <option value="japanese">Japanese 🇯🇵</option>
+              <option value="korean">Korean 🇰🇷</option>
+              <option value="latvian">Latvian 🇱🇻</option>
+              <option value="lithuanian">Lithuanian 🇱🇹</option>
+              <option value="malay">Malay 🇲🇾</option>
+              <option value="norwegian">Norwegian 🇳🇴</option>
+              <option value="persian">Persian 🇮🇷</option>
+              <option value="polish">Polish 🇵🇱</option>
+              <option value="portuguese">Portuguese 🇵🇹</option>
+              <option value="romanian">Romanian 🇷🇴</option>
+              <option value="russian">Russian 🇷🇺</option>
+              <option value="serbian">Serbian 🇷🇸</option>
+              <option value="slovak">Slovak 🇸🇰</option>
+              <option value="slovenian">Slovenian 🇸🇮</option>
+              <option value="spanish" selected>Spanish 🇪🇸</option>
+              <option value="swedish">Swedish 🇸🇪</option>
+              <option value="tagalog">Tagalog 🇵🇭</option>
+              <option value="thai">Thai 🇹🇭</option>
+              <option value="turkish">Turkish 🇹🇷</option>
+              <option value="ukranian">Ukrainian 🇺🇦</option>
+          </select>
+        </p>
+        {/* <p><span id="selectedInputLanguage">English</span></p> */}
         <div>
         <input
           className="input-text"

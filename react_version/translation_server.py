@@ -22,7 +22,7 @@ def traducir():
         # Perform translation logic (Replace this with your actual translation logic)
         translation = translate_text(text, in_code, out_code)
 
-        response = {'translation': translation}
+        response = {'traduccion': translation}
         return jsonify(response)
 
     except Exception as e:
