@@ -37,13 +37,13 @@ const Home = () => {
   }, [translationString])
 
   const handleInputClick = async (word) => {
-    setdictionaryString(limpia(word));
+    setDictionaryString(limpia(word));
   };
 
 
   const definirData = async () => {
     try {
-      console.log("fetching " + limpia(dictionaryString) + " from backend");
+      console.log("querying dictionary for " + limpia(dictionaryString));
       let d = { palabra: limpia(dictionaryString) };
       const res = await fetch("http://localhost:3000/definir", {
         method: "POST",
@@ -52,8 +52,8 @@ const Home = () => {
         },
         body: JSON.stringify(d),
       });
-      const data = await res.json();
-      setDictionaryResponse(data);
+      const res_json = await res.json();
+      setDictionaryResponse(res_json);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -61,20 +61,34 @@ const Home = () => {
 
   const traducirData = async () => {
     try {
+      // Translate
+      console.log("querying translator for " + limpia(translationString));
       const trans_data = { 
         in_code: "en",
         out_code: "es",
         text: limpia(translationString)
       };
-      const res = await fetch("http://127.0.0.1:5000/traducir", {
+      const trad_resp = await fetch("http://127.0.0.1:5000/traducir", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(trans_data),
       });
-      const data = await res.json();
-      setTranslationResponse(data);
+      const trad_json = await trad_resp.json();
+      console.log(trad_json);
+      // set dictionary input to translated
+      setDictionaryString(trad_json.traduccion);
+      let def_data = { palabra: trad_json.traduccion };
+      const def_res = await fetch("http://localhost:3000/definir", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(def_data),
+      });
+      const def_json = await def_res.json();
+      setDictionaryResponse(def_json);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -83,14 +97,14 @@ const Home = () => {
   const makeWordsClickable = () => {
     const words = dictionaryResponse?.definicion?.split(" ");
     if (!words) {
-      return <span>Nada.</span>;
+      return <span>Could find a definition.</span>;
     }
     // console.log( new Map(Object.entries(response?.palabras)).keys() );
     return words.map((word, index) => (
       <span
         key={index}
         className={
-          word in dictionaryResponse?.palabras ? "clickable-word" : "unclickable-word"
+          (dictionaryResponse?.palabras && word in dictionaryResponse?.palabras) ? "clickable-word" : "unclickable-word"
         }
         onClick={async () => {
           await handleInputClick(word);
@@ -104,7 +118,6 @@ const Home = () => {
   function displayLanguage() {
     var selectedLanguage = document.getElementById("lang-choice").value;
     document.getElementById("selectedLanguage").innerText = selectedLanguage;
-    // You can add logic here to perform actions based on the selected language
   }
 
   return (
@@ -112,19 +125,19 @@ const Home = () => {
       <div style={{ textAlign: "center", margin: "20px", "fontSize": "69px" }}>
         <h1>Language Lilypad</h1>
         <h1>🪷🌺🐸🌺🪷</h1>
-        <label id="languageDropdown">Select Language:</label>
+        <label id="languageDropdown">Input Language:</label>
         <select id="lang-choice" onChange={displayLanguage}>
-            <option value="albanian">Albanian 🇦🇱</option>
-            <option value="arabic">Arabic 🇦🇪</option>
-            <option value="azerbaijani">Azerbaijani 🇦🇿</option>
-            <option value="bengali">Bengali 🇧🇩</option>
+            <option value="Albanian">Albanian 🇦🇱</option>
+            <option value="Arabic">Arabic 🇦🇪</option>
+            <option value="Azerbaijani">Azerbaijani 🇦🇿</option>
+            <option value="Bengali">Bengali 🇧🇩</option>
             <option value="bulgarian">Bulgarian 🇧🇬</option>
             <option value="catalan">Catalan 🇦🇩</option>
             <option value="chinese">Chinese 🇨🇳</option>
             <option value="czech">Czech 🇨🇿</option>
             <option value="danish">Danish 🇩🇰</option>
             <option value="dutch">Dutch 🇳🇱</option>
-            <option value="english">English 🇬🇧</option>
+            <option value="english" selected>English 🇬🇧</option>
             <option value="esperanto">Esperanto 🌐</option>
             <option value="estonian">Estonian 🇪🇪</option>
             <option value="finnish">Finnish 🇫🇮</option>
@@ -158,7 +171,7 @@ const Home = () => {
             <option value="turkish">Turkish 🇹🇷</option>
             <option value="ukranian">Ukrainian 🇺🇦</option>
         </select>
-        <p><span id="selectedLanguage">Selected Language: </span></p>
+        <p><span id="selectedLanguage">English</span></p>
         <div>
         <input
           className="input-text"
@@ -179,7 +192,7 @@ const Home = () => {
           style={{
             textAlign: "center",
             height: "50px",
-            color: "#5EDD5F",
+            color: "#E5737A",
             "fontSize": "40px",
           }}
           type="text"
