@@ -40,7 +40,7 @@ const Home = () => {
     setdictionaryString(limpia(word));
   };
 
-  // fetch dynamic BE calls
+
   const definirData = async () => {
     try {
       console.log("fetching " + limpia(dictionaryString) + " from backend");
@@ -61,14 +61,17 @@ const Home = () => {
 
   const traducirData = async () => {
     try {
-      console.log("fetching " + limpia(translationString) + " from backend");
-      let d = { palabra: limpia(translationString) };
+      const trans_data = { 
+        in_code: "en",
+        out_code: "es",
+        text: limpia(translationString)
+      };
       const res = await fetch("http://127.0.0.1:5000/traducir", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(d),
+        body: JSON.stringify(trans_data),
       });
       const data = await res.json();
       setTranslationResponse(data);
