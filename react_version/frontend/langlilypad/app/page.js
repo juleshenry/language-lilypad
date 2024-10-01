@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { languageOptions } from './languageOptions';
+
 
 const Home = () => {
   const [dictionaryResponse, setDictionaryResponse] = useState(null);
@@ -127,96 +129,28 @@ const Home = () => {
         <h1>🪷🌺🐸🌺🪷</h1>
         <label id="inputLanguageDropdown">Input:</label>
         <select id="input-lang-choice" onChange={displayLanguage}>
-            <option value="Albanian">Albanian 🇦🇱</option>
-            <option value="Arabic">Arabic 🇦🇪</option>
-            <option value="Azerbaijani">Azerbaijani 🇦🇿</option>
-            <option value="Bengali">Bengali 🇧🇩</option>
-            <option value="bulgarian">Bulgarian 🇧🇬</option>
-            <option value="catalan">Catalan 🇦🇩</option>
-            <option value="chinese">Chinese 🇨🇳</option>
-            <option value="czech">Czech 🇨🇿</option>
-            <option value="danish">Danish 🇩🇰</option>
-            <option value="dutch">Dutch 🇳🇱</option>
-            <option value="english" selected>English 🇬🇧</option>
-            <option value="esperanto">Esperanto 🌐</option>
-            <option value="estonian">Estonian 🇪🇪</option>
-            <option value="finnish">Finnish 🇫🇮</option>
-            <option value="french">French 🇫🇷</option>
-            <option value="german">German 🇩🇪</option>
-            <option value="greek">Greek 🇬🇷</option>
-            <option value="hebrew">Hebrew 🇮🇱</option>
-            <option value="hindi">Hindi 🇮🇳</option>
-            <option value="hungarian">Hungarian 🇭🇺</option>
-            <option value="indonesian">Indonesian 🇮🇩</option>
-            <option value="irish">Irish ☘️</option>
-            <option value="italian">Italian 🇮🇹</option>
-            <option value="japanese">Japanese 🇯🇵</option>
-            <option value="korean">Korean 🇰🇷</option>
-            <option value="latvian">Latvian 🇱🇻</option>
-            <option value="lithuanian">Lithuanian 🇱🇹</option>
-            <option value="malay">Malay 🇲🇾</option>
-            <option value="norwegian">Norwegian 🇳🇴</option>
-            <option value="persian">Persian 🇮🇷</option>
-            <option value="polish">Polish 🇵🇱</option>
-            <option value="portuguese">Portuguese 🇵🇹</option>
-            <option value="romanian">Romanian 🇷🇴</option>
-            <option value="russian">Russian 🇷🇺</option>
-            <option value="serbian">Serbian 🇷🇸</option>
-            <option value="slovak">Slovak 🇸🇰</option>
-            <option value="slovenian">Slovenian 🇸🇮</option>
-            <option value="spanish">Spanish 🇪🇸</option>
-            <option value="swedish">Swedish 🇸🇪</option>
-            <option value="tagalog">Tagalog 🇵🇭</option>
-            <option value="thai">Thai 🇹🇭</option>
-            <option value="turkish">Turkish 🇹🇷</option>
-            <option value="ukranian">Ukrainian 🇺🇦</option>
+          {languageOptions.map((lang) => (
+                <option 
+                  key={lang.value} 
+                  value={lang.value} 
+                  defaultValue={lang.value === "english"}
+                >
+                  {lang.label}
+                </option>
+              ))}
         </select>
         <p>
           <label id="outputLanguageDropdown">Output:</label>
           <select id="output-lang-choice" onChange={displayLanguage}>
-              <option value="Albanian">Albanian 🇦🇱</option>
-              <option value="Arabic">Arabic 🇦🇪</option>
-              <option value="Azerbaijani">Azerbaijani 🇦🇿</option>
-              <option value="Bengali">Bengali 🇧🇩</option>
-              <option value="bulgarian">Bulgarian 🇧🇬</option>
-              <option value="catalan">Catalan 🇦🇩</option>
-              <option value="chinese">Chinese 🇨🇳</option>
-              <option value="czech">Czech 🇨🇿</option>
-              <option value="danish">Danish 🇩🇰</option>
-              <option value="dutch">Dutch 🇳🇱</option>
-              <option value="english">English 🇬🇧</option>
-              <option value="esperanto">Esperanto 🌐</option>
-              <option value="estonian">Estonian 🇪🇪</option>
-              <option value="finnish">Finnish 🇫🇮</option>
-              <option value="french">French 🇫🇷</option>
-              <option value="german">German 🇩🇪</option>
-              <option value="greek">Greek 🇬🇷</option>
-              <option value="hebrew">Hebrew 🇮🇱</option>
-              <option value="hindi">Hindi 🇮🇳</option>
-              <option value="hungarian">Hungarian 🇭🇺</option>
-              <option value="indonesian">Indonesian 🇮🇩</option>
-              <option value="irish">Irish ☘️</option>
-              <option value="italian">Italian 🇮🇹</option>
-              <option value="japanese">Japanese 🇯🇵</option>
-              <option value="korean">Korean 🇰🇷</option>
-              <option value="latvian">Latvian 🇱🇻</option>
-              <option value="lithuanian">Lithuanian 🇱🇹</option>
-              <option value="malay">Malay 🇲🇾</option>
-              <option value="norwegian">Norwegian 🇳🇴</option>
-              <option value="persian">Persian 🇮🇷</option>
-              <option value="polish">Polish 🇵🇱</option>
-              <option value="portuguese">Portuguese 🇵🇹</option>
-              <option value="romanian">Romanian 🇷🇴</option>
-              <option value="russian">Russian 🇷🇺</option>
-              <option value="serbian">Serbian 🇷🇸</option>
-              <option value="slovak">Slovak 🇸🇰</option>
-              <option value="slovenian">Slovenian 🇸🇮</option>
-              <option value="spanish" selected>Spanish 🇪🇸</option>
-              <option value="swedish">Swedish 🇸🇪</option>
-              <option value="tagalog">Tagalog 🇵🇭</option>
-              <option value="thai">Thai 🇹🇭</option>
-              <option value="turkish">Turkish 🇹🇷</option>
-              <option value="ukranian">Ukrainian 🇺🇦</option>
+            {languageOptions.map((lang) => (
+              <option 
+                key={lang.value} 
+                value={lang.value} 
+                defaultValue={lang.value === "spanish"}
+              >
+                {lang.label}
+              </option>
+            ))}
           </select>
         </p>
         {/* <p><span id="selectedInputLanguage">English</span></p> */}
