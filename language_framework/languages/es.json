@@ -1,0 +1,21 @@
+{
+  "name": "Spanish",
+  "native_name": "Español",
+  "language_code": "es",
+  "database_table": "palabras",
+  "enabled": true,
+  "source_type": "pdf",
+  "source_config": {
+    "pdf_path": "src_langz/RAE_español.pdf",
+    "start_page": 3,
+    "end_page": 6348,
+    "pattern": "->(.*?)(?=\\.)"
+  },
+  "parser_config": {
+    "tokenize_pattern": "[\\w'-]+",
+    "clean_patterns": [
+      "\\(.*?\\)",
+      "\\[.*?\\]"
+    ]
+  }
+}

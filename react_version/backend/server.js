@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const definirRoutes = require("./src/routes/definir"); // Import the definir route
+const definirMultilangRoutes = require("./src/routes/definir_multilang"); // Import multi-language route
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(cors(corsOptions));
 
 // Use the definir route
 app.use("/definir", definirRoutes);
+
+// Use the multi-language definir route
+app.use("/definir/multilang", definirMultilangRoutes);
 
 // Define a route for GET requests to /api/boo
 app.post("/api/ghoul", (req, res) => {

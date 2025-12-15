@@ -1,0 +1,20 @@
+{
+  "name": "French",
+  "native_name": "Français",
+  "language_code": "fr",
+  "database_table": "fr_words",
+  "enabled": true,
+  "source_type": "json",
+  "source_config": {
+    "json_path": "language_framework/data/fr_dictionary.json",
+    "word_key": "word",
+    "definition_key": "definition"
+  },
+  "parser_config": {
+    "tokenize_pattern": "[\\w'-]+",
+    "clean_patterns": [
+      "\\(.*?\\)",
+      "\\[.*?\\]"
+    ]
+  }
+}

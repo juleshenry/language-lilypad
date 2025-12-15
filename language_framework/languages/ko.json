@@ -1,0 +1,20 @@
+{
+  "name": "Korean",
+  "native_name": "한국어",
+  "language_code": "ko",
+  "database_table": "ko_words",
+  "enabled": true,
+  "source_type": "json",
+  "source_config": {
+    "json_path": "language_framework/data/ko_dictionary.json",
+    "word_key": "word",
+    "definition_key": "definition"
+  },
+  "parser_config": {
+    "tokenize_pattern": "[가-힣]+",
+    "clean_patterns": [
+      "\\(.*?\\)",
+      "\\[.*?\\]"
+    ]
+  }
+}
