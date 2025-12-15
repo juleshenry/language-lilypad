@@ -34,7 +34,7 @@ async function asincDefinir(palabra) {
 
     return user; // Returning the result of the query
   } catch (error) {
-    consoel.log("SQL error");
+    console.log("SQL error");
     throw error; // Propagating any errors that occurred during the query
   }
 }
