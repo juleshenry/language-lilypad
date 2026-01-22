@@ -183,12 +183,10 @@ const Home = () => {
         />
         </div>
       </div>
-      <div style={{ textAlign: "center" }}>
+      <div className="definition-container">
         <p>
           {makeWordsClickable(JSON.stringify(dictionaryResponse?.definicion, null, 2))}
         </p>
-        {/* <p>API Result:</p> */}
-        {/* <p>{JSON.stringify(response, null, 2)}</p> */}
       </div>
     </div>
   );
