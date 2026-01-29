@@ -21,6 +21,7 @@ def get_database_size_mb(db_path):
 
 def fetch_all_words(db_path):
     """Fetch all words and definitions from the database, sorted alphabetically."""
+    conn = None
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -39,29 +40,18 @@ def fetch_all_words(db_path):
         print("Please ensure the database has a 'palabras' table with 'palabra' and 'definicion' columns.")
         sys.exit(1)
     finally:
-        if 'conn' in locals():
+        if conn is not None:
             conn.close()
 
 
-def estimate_json_size(data):
+def estimate_entry_size(palabra, definicion):
     """
-    Estimate the size of JSON data in bytes.
-    For large datasets, we use string length estimation for performance.
+    Estimate the size of a single JSON entry in bytes.
+    
+    Format in JSON: "  \"palabra\": \"definicion\",\n"
+    Includes indent (2 spaces), quotes, colon, comma, and newline.
     """
-    if len(data) < 1000:
-        # For small datasets, use accurate calculation
-        json_str = json.dumps(data, ensure_ascii=False, indent=2)
-        return len(json_str.encode('utf-8'))
-    else:
-        # For large datasets, estimate based on string lengths
-        # JSON overhead: keys + values + quotes + commas + newlines + braces
-        # Each entry: "key": "value",\n with 2-space indent
-        total = 4  # Opening and closing braces + newlines
-        for key, value in data.items():
-            # Estimate: "  " + '"' + key + '"' + ": " + '"' + value + '"' + ",\n"
-            entry_size = 2 + 1 + len(key.encode('utf-8')) + 1 + 2 + 1 + len(value.encode('utf-8')) + 1 + 2
-            total += entry_size
-        return total
+    return 2 + 1 + len(palabra.encode('utf-8')) + 1 + 2 + 1 + len(definicion.encode('utf-8')) + 1 + 2
 
 
 def split_into_chunks(words, max_size_bytes=25 * 1024 * 1024):
@@ -84,9 +74,8 @@ def split_into_chunks(words, max_size_bytes=25 * 1024 * 1024):
     safe_threshold = max_size_bytes * 0.95  # 95% of max size
     
     for palabra, definicion in words:
-        # Estimate size of this single entry
-        # Format in JSON: "  \"palabra\": \"definicion\",\n"
-        entry_size = 2 + 1 + len(palabra.encode('utf-8')) + 1 + 2 + 1 + len(definicion.encode('utf-8')) + 1 + 2
+        # Estimate size of this single entry using helper function
+        entry_size = estimate_entry_size(palabra, definicion)
         
         # Check if adding this entry would exceed threshold
         if estimated_size + entry_size > safe_threshold and current_chunk:
@@ -126,6 +115,10 @@ def sanitize_word_for_filename(word):
     word = word.replace('\t', '_')  # Tab
     word = word.strip()
     
+    # Handle empty strings after sanitization
+    if not word:
+        return "empty"
+    
     # Limit length to avoid filesystem limits (leave room for __, .json and other word)
     max_word_length = 100
     if len(word) > max_word_length:
@@ -150,7 +143,7 @@ def write_json_files(chunks, output_dir):
     
     file_info = []
     
-    for i, chunk in enumerate(chunks):
+    for chunk in chunks:
         first_word = sanitize_word_for_filename(chunk[0][0])
         last_word = sanitize_word_for_filename(chunk[-1][0])
         
@@ -230,9 +223,14 @@ def main():
     print("Summary:")
     print(f"  Total files created: {len(file_info)}")
     print(f"  Total words: {len(words)}")
-    total_size = sum(size for _, size, _ in file_info)
-    print(f"  Total size: {total_size:.2f} MB")
-    print(f"  Average file size: {total_size / len(file_info):.2f} MB")
+    
+    if file_info:
+        total_size = sum(size for _, size, _ in file_info)
+        print(f"  Total size: {total_size:.2f} MB")
+        print(f"  Average file size: {total_size / len(file_info):.2f} MB")
+    else:
+        print("  No files created (database may be empty)")
+        return
     
     # Verify all files are under 25MB
     oversized = [f for f, size, _ in file_info if size >= 25]
