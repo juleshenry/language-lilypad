@@ -17,7 +17,7 @@ python3 db_to_json.py <database_path> [output_directory]
 
 ### Examples
 
-Convert the database to JSON files in the current directory:
+Convert the database to JSON files in a json_output directory:
 ```bash
 python3 db_to_json.py ../palabras.db ./json_output
 ```

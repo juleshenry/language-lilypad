@@ -21,21 +21,47 @@ def get_database_size_mb(db_path):
 
 def fetch_all_words(db_path):
     """Fetch all words and definitions from the database, sorted alphabetically."""
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    
-    # Fetch all words sorted alphabetically
-    cursor.execute("SELECT palabra, definicion FROM palabras ORDER BY palabra")
-    words = cursor.fetchall()
-    
-    conn.close()
-    return words
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        # Fetch all words sorted alphabetically
+        cursor.execute("SELECT palabra, definicion FROM palabras ORDER BY palabra")
+        words = cursor.fetchall()
+        
+        return words
+    except sqlite3.DatabaseError as e:
+        print(f"Error reading database: {e}")
+        print("Please ensure the database file is valid and not corrupted.")
+        sys.exit(1)
+    except sqlite3.OperationalError as e:
+        print(f"Database operation error: {e}")
+        print("Please ensure the database has a 'palabras' table with 'palabra' and 'definicion' columns.")
+        sys.exit(1)
+    finally:
+        if 'conn' in locals():
+            conn.close()
 
 
 def estimate_json_size(data):
-    """Estimate the size of JSON data in bytes."""
-    json_str = json.dumps(data, ensure_ascii=False, indent=2)
-    return len(json_str.encode('utf-8'))
+    """
+    Estimate the size of JSON data in bytes.
+    For large datasets, we use string length estimation for performance.
+    """
+    if len(data) < 1000:
+        # For small datasets, use accurate calculation
+        json_str = json.dumps(data, ensure_ascii=False, indent=2)
+        return len(json_str.encode('utf-8'))
+    else:
+        # For large datasets, estimate based on string lengths
+        # JSON overhead: keys + values + quotes + commas + newlines + braces
+        # Each entry: "key": "value",\n with 2-space indent
+        total = 4  # Opening and closing braces + newlines
+        for key, value in data.items():
+            # Estimate: "  " + '"' + key + '"' + ": " + '"' + value + '"' + ",\n"
+            entry_size = 2 + 1 + len(key.encode('utf-8')) + 1 + 2 + 1 + len(value.encode('utf-8')) + 1 + 2
+            total += entry_size
+        return total
 
 
 def split_into_chunks(words, max_size_bytes=25 * 1024 * 1024):
@@ -51,25 +77,26 @@ def split_into_chunks(words, max_size_bytes=25 * 1024 * 1024):
     """
     chunks = []
     current_chunk = []
-    current_size = 2  # Start with 2 bytes for the empty object "{}"
+    estimated_size = 0
+    
+    # Use a threshold slightly below max to account for minor estimation errors
+    # This ensures we never exceed the limit even with estimation inaccuracies
+    safe_threshold = max_size_bytes * 0.95  # 95% of max size
     
     for palabra, definicion in words:
-        # Estimate the size of this entry when added to JSON
-        entry = {palabra: definicion}
-        entry_size = estimate_json_size(entry)
+        # Estimate size of this single entry
+        # Format in JSON: "  \"palabra\": \"definicion\",\n"
+        entry_size = 2 + 1 + len(palabra.encode('utf-8')) + 1 + 2 + 1 + len(definicion.encode('utf-8')) + 1 + 2
         
-        # Add some overhead for JSON formatting (commas, newlines, etc.)
-        entry_size += 10
-        
-        # Check if adding this entry would exceed the limit
-        if current_size + entry_size > max_size_bytes and current_chunk:
-            # Save current chunk and start a new one
+        # Check if adding this entry would exceed threshold
+        if estimated_size + entry_size > safe_threshold and current_chunk:
+            # Save current chunk and start new one
             chunks.append(current_chunk)
             current_chunk = []
-            current_size = 2
+            estimated_size = 4  # JSON object overhead: "{\n}\n"
         
         current_chunk.append((palabra, definicion))
-        current_size += entry_size
+        estimated_size += entry_size
     
     # Add the last chunk if it's not empty
     if current_chunk:
@@ -78,8 +105,12 @@ def split_into_chunks(words, max_size_bytes=25 * 1024 * 1024):
     return chunks
 
 
-def sanitize_filename(word):
-    """Sanitize a word to be used in a filename."""
+def sanitize_word_for_filename(word):
+    """
+    Sanitize a word to be safely used as part of a filename.
+    
+    Removes or replaces characters that are problematic in filenames across different OS.
+    """
     # Replace characters that might cause issues in filenames
     word = word.replace('/', '_')
     word = word.replace('\\', '_')
@@ -90,7 +121,17 @@ def sanitize_filename(word):
     word = word.replace('"', '_')
     word = word.replace('<', '_')
     word = word.replace('>', '_')
-    return word.strip()
+    word = word.replace('\0', '_')  # Null byte
+    word = word.replace('\n', '_')  # Newline
+    word = word.replace('\t', '_')  # Tab
+    word = word.strip()
+    
+    # Limit length to avoid filesystem limits (leave room for __, .json and other word)
+    max_word_length = 100
+    if len(word) > max_word_length:
+        word = word[:max_word_length]
+    
+    return word
 
 
 def write_json_files(chunks, output_dir):
@@ -110,8 +151,8 @@ def write_json_files(chunks, output_dir):
     file_info = []
     
     for i, chunk in enumerate(chunks):
-        first_word = sanitize_filename(chunk[0][0])
-        last_word = sanitize_filename(chunk[-1][0])
+        first_word = sanitize_word_for_filename(chunk[0][0])
+        last_word = sanitize_word_for_filename(chunk[-1][0])
         
         # Create filename
         filename = f"{first_word}__{last_word}.json"
@@ -120,9 +161,14 @@ def write_json_files(chunks, output_dir):
         # Convert chunk to dictionary
         data = {palabra: definicion for palabra, definicion in chunk}
         
-        # Write JSON file
-        with open(filepath, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        # Write JSON file with error handling
+        try:
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except IOError as e:
+            print(f"Error writing file {filename}: {e}")
+            print("Please check disk space and write permissions.")
+            sys.exit(1)
         
         # Get file size
         file_size_mb = os.path.getsize(filepath) / (1024 * 1024)
@@ -149,6 +195,13 @@ def main():
     # Validate database file
     if not os.path.exists(db_path):
         print(f"Error: Database file not found: {db_path}")
+        print("Please check the file path and ensure the database file exists.")
+        print(f"Example: python3 {sys.argv[0]} /path/to/palabras.db ./json_output")
+        sys.exit(1)
+    
+    # Check if it's a file (not a directory)
+    if not os.path.isfile(db_path):
+        print(f"Error: Path exists but is not a file: {db_path}")
         sys.exit(1)
     
     print(f"Converting database: {db_path}")
