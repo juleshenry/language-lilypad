@@ -7,9 +7,10 @@ const Home = () => {
   const [dictionaryResponse, setDictionaryResponse] = useState(null);
   const [dictionaryString, setDictionaryString] = useState("");
 
-  const [translationResponse, setTranslationResponse] = useState(null);
-  const [translationString, setTranslationString] = useState("");
+  const [inputLanguage, setInputLanguage] = useState("en");
+  const [outputLanguage, setOutputLanguage] = useState("es");
 
+  const [translationString, setTranslationString] = useState("");
 
   const limpia = (e) => {
     return e
@@ -42,6 +43,13 @@ const Home = () => {
     setDictionaryString(limpia(word));
   };
 
+  const handleInputLangChange = (e) => {
+    setInputLanguage(e.target.value);
+  };
+
+  const handleOutputLangChange = (e) => {
+    setOutputLanguage(e.target.value);
+  };
 
   const definirData = async () => {
     try {
@@ -66,8 +74,8 @@ const Home = () => {
       // Translate
       console.log("querying translator for " + limpia(translationString));
       const trans_data = { 
-        in_code: "en",
-        out_code: "es",
+        in_code: inputLanguage,
+        out_code: outputLanguage,
         text: limpia(translationString)
       };
       const trad_resp = await fetch("http://127.0.0.1:5000/traducir", {
@@ -117,23 +125,17 @@ const Home = () => {
     ));
   };
 
-  function displayLanguage() {
-    var selectedLanguage = document.getElementById("input-lang-choice").value;
-    document.getElementById("selectedInputLanguage").innerText = selectedLanguage;
-  }
-
   return (
     <div>
       <div style={{ textAlign: "center", margin: "20px", "fontSize": "69px" }}>
         <h1>Language Lilypad</h1>
         <h1>🪷🌺🐸🌺🪷</h1>
         <label id="inputLanguageDropdown">Input:</label>
-        <select id="input-lang-choice" onChange={displayLanguage}>
+        <select id="input-lang-choice" value={inputLanguage} onChange={handleInputLangChange}>
           {languageOptions.map((lang) => (
                 <option 
                   key={lang.value} 
                   value={lang.value} 
-                  defaultValue={lang.value === "english"}
                 >
                   {lang.label}
                 </option>
@@ -141,19 +143,17 @@ const Home = () => {
         </select>
         <p>
           <label id="outputLanguageDropdown">Output:</label>
-          <select id="output-lang-choice" onChange={displayLanguage}>
+          <select id="output-lang-choice" value={outputLanguage} onChange={handleOutputLangChange}>
             {languageOptions.map((lang) => (
               <option 
                 key={lang.value} 
                 value={lang.value} 
-                defaultValue={lang.value === "spanish"}
               >
                 {lang.label}
               </option>
             ))}
           </select>
         </p>
-        {/* <p><span id="selectedInputLanguage">English</span></p> */}
         <div>
         <input
           className="input-text"
@@ -183,12 +183,10 @@ const Home = () => {
         />
         </div>
       </div>
-      <div style={{ textAlign: "center" }}>
+      <div className="definition-container">
         <p>
           {makeWordsClickable(JSON.stringify(dictionaryResponse?.definicion, null, 2))}
         </p>
-        {/* <p>API Result:</p> */}
-        {/* <p>{JSON.stringify(response, null, 2)}</p> */}
       </div>
     </div>
   );

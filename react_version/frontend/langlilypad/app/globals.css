@@ -3,45 +3,90 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 2, 200, 8;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 20, 80, 20;
+  --background-end-rgb: 40, 120, 40;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: radial-gradient(circle at center, rgb(var(--background-end-rgb)), rgb(var(--background-start-rgb)));
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
-
 
 .clickable-word {
   cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-  margin: 0 5px;
+  color: #a8ffb0;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  margin: 0 2px;
+  padding: 0 4px;
+  border-radius: 4px;
 }
 
+.clickable-word:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid #a8ffb0;
+}
 
 .unclickable-word {
-  cursor: pointer;
-  color: yellow;
-  text-decoration: underline;
-  margin: 0 5px;
+  color: #ffffff;
+  margin: 0 2px;
+  opacity: 0.8;
 }
 
 select {
-  color: black
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  outline: none;
+  font-size: 1.2rem;
+  margin: 0 10px;
+}
+
+select option {
+  background: #145014;
+  color: white;
+}
+
+input {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 16px !important;
+  padding: 15px !important;
+  outline: none !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(5px);
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+input:focus {
+  border-color: #a8ffb0 !important;
+  box-shadow: 0 0 20px rgba(168, 255, 176, 0.2);
+  transform: translateY(-2px);
+}
+
+h1 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+.definition-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  backdrop-filter: blur(15px);
+  line-height: 1.6;
+  font-size: 1.4rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
