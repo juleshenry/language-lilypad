@@ -68,11 +68,12 @@ def main():
 
     conn = create_db(db_path)
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM palavras WHERE definicion = 'NOT_FOUND'")
-    deleted_count = cursor.rowcount
-    conn.commit()
-    if deleted_count > 0:
-        print(f"Removed {deleted_count} 'NOT_FOUND' entries to retry.")
+
+    cursor.execute("SELECT COUNT(*) FROM palavras WHERE definicion != 'NOT_FOUND'")
+    found_count = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM palavras WHERE definicion = 'NOT_FOUND'")
+    not_found_count = cursor.fetchone()[0]
+    print(f"Resuming: {found_count} definitions found, {not_found_count} not found (skipping both).")
 
     print("Loading words from CSV...")
     words_set = set()
