@@ -3,7 +3,8 @@ import json
 import re
 
 DB_PATH = 'palabras.db'
-OUTPUT_PATH = 'dictionaries/portuguese.dict.json'
+OUTPUT_DIR = 'dictionaries'
+NUM_CHUNKS = 10
 
 # POS labels that appear at the start of definition sections on dicio.com.br
 POS_PATTERNS = [
@@ -75,10 +76,22 @@ def main():
 
     conn.close()
 
-    with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
-        json.dump(dictionary, f, ensure_ascii=False, indent=2)
+    # Split into NUM_CHUNKS alphabetical pieces
+    chunk_size = len(dictionary) // NUM_CHUNKS
+    for i in range(NUM_CHUNKS):
+        start = i * chunk_size
+        end = start + chunk_size if i < NUM_CHUNKS - 1 else len(dictionary)
+        chunk = dictionary[start:end]
 
-    print(f"Exported {len(dictionary)} words to {OUTPUT_PATH}")
+        path = f"{OUTPUT_DIR}/portuguese.dict.{i + 1}.json"
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(chunk, f, ensure_ascii=False, indent=2)
+
+        first = chunk[0]['word']
+        last = chunk[-1]['word']
+        print(f"  {path}: {len(chunk)} words ({first} -> {last})")
+
+    print(f"\nExported {len(dictionary)} words across {NUM_CHUNKS} files")
 
 if __name__ == '__main__':
     main()
