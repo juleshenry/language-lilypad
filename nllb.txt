@@ -1,0 +1,89 @@
+Code,Language,Script
+ace,Achinese,Arabic / Latin
+acm,Mesopotamian Arabic,Arabic
+acq,Ta'izzi-Adeni Arabic,Arabic
+aeb,Tunisian Arabic,Arabic
+afr,Afrikaans,Latin
+ajp,South Levantine Arabic,Arabic
+aka,Akan,Latin
+als,Tosk Albanian,Latin
+amh,Amharic,Ethiopic
+apc,North Levantine Arabic,Arabic
+arb,Standard Arabic,Arabic
+ars,Najdi Arabic,Arabic
+ary,Moroccan Arabic,Arabic
+arz,Egyptian Arabic,Arabic
+asm,Assamese,Bengali
+ast,Asturian,Latin
+awa,Awadhi,Devanagari
+ayr,Central Aymara,Latin
+azb/azj,Azerbaijani,Arabic / Latin
+bak,Bashkir,Cyrillic
+bam,Bambara,Latin
+ban,Balinese,Latin
+bel,Belarusian,Cyrillic
+bem,Bemba,Latin
+ben,Bengali,Bengali
+bho,Bhojpuri,Devanagari
+bjn,Banjar,Arabic / Latin
+bod,Tibetan,Tibetan
+bos,Bosnian,Latin
+bug,Buginese,Latin
+bul,Bulgarian,Cyrillic
+cat,Catalan,Latin
+ceb,Cebuano,Latin
+ces,Czech,Latin
+cjk,Chokwe,Latin
+ckb,Central Kurdish (Sorani),Arabic
+crh,Crimean Tatar,Latin
+cym,Welsh,Latin
+dan,Danish,Latin
+deu,German,Latin
+dik,Dinkas (South Sudan),Latin
+dyu,Dyula,Latin
+dzo,Dzongkha,Tibetan
+ell,Greek,Greek
+eng,English,Latin
+epo,Esperanto,Latin
+est,Estonian,Latin
+eus,Basque,Latin
+ewe,Ewe,Latin
+fao,Faroese,Latin
+fij,Fijian,Latin
+fin,Finnish,Latin
+fra,French,Latin
+guj,Gujarati,Gujarati
+heb,Hebrew,Hebrew
+hin,Hindi,Devanagari
+hrv,Croatian,Latin
+hun,Hungarian,Latin
+hye,Armenian,Armenian
+ibo,Igbo,Latin
+ind,Indonesian,Latin
+isl,Icelandic,Latin
+ita,Italian,Latin
+jpn,Japanese,Japanese
+kan,Kannada,Kannada
+kas,Kashmiri,Arabic / Devanagari
+kat,Georgian,Georgian
+kaz,Kazakh,Cyrillic
+khm,Khmer,Khmer
+kor,Korean,Hangul
+lao,Lao,Lao
+mal,Malayalam,Malayalam
+mar,Marathi,Devanagari
+mya,Burmese,Myanmar
+nld,Dutch,Latin
+pan,Punjabi,Gurmukhi
+pol,Polish,Latin
+por,Portuguese,Latin
+rus,Russian,Cyrillic
+spa,Spanish,Latin
+tam,Tamil,Tamil
+tel,Telugu,Telugu
+tha,Thai,Thai
+tur,Turkish,Latin
+ukr,Ukrainian,Cyrillic
+urd,Urdu,Arabic
+vie,Vietnamese,Latin
+zho,Chinese,Hans (Simp.) / Hant (Trad.)
