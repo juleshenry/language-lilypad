@@ -9,33 +9,23 @@ Hence, when using this dictionary, one may leap-frog from word to word, as if th
 
 ## Getting Started
 
-The project consists of three main components:
+The project consists of two main components:
 1.  **Dictionary Backend (Node.js/Express):** Handles word definitions using a SQLite database.
-2.  **Translation Backend (Python/Flask):** Provides translation services using `argos-translate`.
-3.  **Frontend (Next.js):** The user interface for interacting with the dictionary and translator.
+2.  **Frontend (Next.js):** The user interface for interacting with the dictionary.
 
 ### 1. Dictionary Backend
 Navigate to the backend directory and start the server:
 ```bash
-cd react_version/backend
+cd backend
 npm install
 node server.js
 ```
 The server runs on [http://localhost:3000](http://localhost:3000).
 
-### 2. Translation Backend
-The translation server requires Python 3 and several dependencies. Navigate to the `react_version` directory:
-```bash
-cd react_version
-pip install flask flask-cors argos-translate
-python3 translation_server.py
-```
-The server runs on [http://localhost:5000](http://localhost:5000).
-
-### 3. Frontend
+### 2. Frontend
 Navigate to the frontend directory, install dependencies, and start the development server:
 ```bash
-cd react_version/frontend/langlilypad
+cd frontend/langlilypad
 npm install
 npm run dev -- --port 3333
 ```
