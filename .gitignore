@@ -1,4 +1,22 @@
+# Dependencies
+node_modules/
+
+# Data sources (too large / generated)
+unitex-pt-br/
+*.db
+
+# Build output
+.next/
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Legacy
 src_langz
-node_modules
-react_version/backend/node_modules
-react_version/frontend/langlilypad/node_modules
